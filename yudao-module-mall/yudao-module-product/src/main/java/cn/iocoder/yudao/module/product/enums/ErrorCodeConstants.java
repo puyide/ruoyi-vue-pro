@@ -53,4 +53,11 @@ public interface ErrorCodeConstants {
     ErrorCode FAVORITE_EXISTS = new ErrorCode(1_008_008_000, "该商品已经被收藏");
     ErrorCode FAVORITE_NOT_EXISTS = new ErrorCode(1_008_008_001, "商品收藏不存在");
 
+    // ========== 器材预约 1-008-009-000 ==========
+    ErrorCode RESERVATION_NOT_EXISTS = new ErrorCode(1_008_009_000, "器材预约不存在");
+    ErrorCode RESERVATION_NOT_OWNER = new ErrorCode(1_008_009_001, "您不是该器材的所有者");
+    ErrorCode RESERVATION_STATUS_ERROR = new ErrorCode(1_008_009_002, "预约状态不正确，无法操作");
+    ErrorCode RESERVATION_CANCEL_DENIED = new ErrorCode(1_008_009_003, "您没有权限取消该预约");
+    ErrorCode RESERVATION_CANNOT_SELF = new ErrorCode(1_008_009_004, "不能预约自己的器材");
+
 }

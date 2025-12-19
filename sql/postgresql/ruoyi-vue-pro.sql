@@ -27,7 +27,7 @@ COMMENT ON TABLE dual IS '数据库连接的表';
 INSERT INTO dual VALUES (1);
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS infra_api_access_log_seq;
+DROP SEQUENCE IF EXISTS infra_api_access_log_seq CASCADE;
 CREATE SEQUENCE infra_api_access_log_seq
     START 1;
 
@@ -96,7 +96,7 @@ COMMENT ON COLUMN infra_api_access_log.deleted IS '是否删除';
 COMMENT ON COLUMN infra_api_access_log.tenant_id IS '租户编号';
 COMMENT ON TABLE infra_api_access_log IS 'API 访问日志表';
 
-DROP SEQUENCE IF EXISTS infra_api_error_log_seq;
+DROP SEQUENCE IF EXISTS infra_api_error_log_seq CASCADE;
 CREATE SEQUENCE infra_api_error_log_seq
     START 1;
 
@@ -169,7 +169,7 @@ COMMENT ON COLUMN infra_api_error_log.deleted IS '是否删除';
 COMMENT ON COLUMN infra_api_error_log.tenant_id IS '租户编号';
 COMMENT ON TABLE infra_api_error_log IS '系统异常日志';
 
-DROP SEQUENCE IF EXISTS infra_codegen_column_seq;
+DROP SEQUENCE IF EXISTS infra_codegen_column_seq CASCADE;
 CREATE SEQUENCE infra_codegen_column_seq
     START 1;
 
@@ -232,7 +232,7 @@ COMMENT ON COLUMN infra_codegen_column.update_time IS '更新时间';
 COMMENT ON COLUMN infra_codegen_column.deleted IS '是否删除';
 COMMENT ON TABLE infra_codegen_column IS '代码生成表字段定义';
 
-DROP SEQUENCE IF EXISTS infra_codegen_table_seq;
+DROP SEQUENCE IF EXISTS infra_codegen_table_seq CASCADE;
 CREATE SEQUENCE infra_codegen_table_seq
     START 1;
 
@@ -298,7 +298,7 @@ COMMENT ON COLUMN infra_codegen_table.deleted IS '是否删除';
 COMMENT ON TABLE infra_codegen_table IS '代码生成表定义';
 
 
-DROP SEQUENCE IF EXISTS infra_config_seq;
+DROP SEQUENCE IF EXISTS infra_config_seq CASCADE;
 CREATE SEQUENCE infra_config_seq
     START 1;
 
@@ -357,7 +357,7 @@ INSERT INTO infra_config (id, category, type, name, config_key, value, visible, 
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS infra_data_source_config_seq;
+DROP SEQUENCE IF EXISTS infra_data_source_config_seq CASCADE;
 CREATE SEQUENCE infra_data_source_config_seq
     START 1;
 
@@ -394,7 +394,7 @@ COMMENT ON COLUMN infra_data_source_config.update_time IS '更新时间';
 COMMENT ON COLUMN infra_data_source_config.deleted IS '是否删除';
 COMMENT ON TABLE infra_data_source_config IS '数据源配置表';
 
-DROP SEQUENCE IF EXISTS infra_file_seq;
+DROP SEQUENCE IF EXISTS infra_file_seq CASCADE;
 CREATE SEQUENCE infra_file_seq
     START 1;
 
@@ -435,7 +435,7 @@ COMMENT ON COLUMN infra_file.update_time IS '更新时间';
 COMMENT ON COLUMN infra_file.deleted IS '是否删除';
 COMMENT ON TABLE infra_file IS '文件表';
 
-DROP SEQUENCE IF EXISTS infra_file_config_seq;
+DROP SEQUENCE IF EXISTS infra_file_config_seq CASCADE;
 CREATE SEQUENCE infra_file_config_seq
     START 31;
 
@@ -491,7 +491,7 @@ INSERT INTO infra_file_config (id, name, storage, remark, master, config, creato
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS infra_file_content_seq;
+DROP SEQUENCE IF EXISTS infra_file_content_seq CASCADE;
 CREATE SEQUENCE infra_file_content_seq
     START 1;
 
@@ -526,7 +526,7 @@ COMMENT ON COLUMN infra_file_content.update_time IS '更新时间';
 COMMENT ON COLUMN infra_file_content.deleted IS '是否删除';
 COMMENT ON TABLE infra_file_content IS '文件表';
 
-DROP SEQUENCE IF EXISTS infra_job_seq;
+DROP SEQUENCE IF EXISTS infra_job_seq CASCADE;
 CREATE SEQUENCE infra_job_seq
     START 1;
 
@@ -592,7 +592,7 @@ INSERT INTO infra_job (id, name, status, handler_name, handler_param, cron_expre
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS infra_job_log_seq;
+DROP SEQUENCE IF EXISTS infra_job_log_seq CASCADE;
 CREATE SEQUENCE infra_job_log_seq
     START 1;
 
@@ -639,7 +639,7 @@ COMMENT ON COLUMN infra_job_log.update_time IS '更新时间';
 COMMENT ON COLUMN infra_job_log.deleted IS '是否删除';
 COMMENT ON TABLE infra_job_log IS '定时任务日志表';
 
-DROP SEQUENCE IF EXISTS system_dept_seq;
+DROP SEQUENCE IF EXISTS system_dept_seq CASCADE;
 CREATE SEQUENCE system_dept_seq
     START 1;
 
@@ -706,7 +706,7 @@ INSERT INTO system_dept (id, name, parent_id, sort, leader_user_id, phone, email
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_dict_data_seq;
+DROP SEQUENCE IF EXISTS system_dict_data_seq CASCADE;
 CREATE SEQUENCE system_dict_data_seq
     START 1;
 
@@ -1362,7 +1362,7 @@ INSERT INTO system_dict_data (id, sort, label, value, dict_type, status, color_t
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_dict_type_seq;
+DROP SEQUENCE IF EXISTS system_dict_type_seq CASCADE;
 CREATE SEQUENCE system_dict_type_seq
     START 1;
 
@@ -1516,7 +1516,7 @@ INSERT INTO system_dict_type (id, name, type, status, remark, creator, create_ti
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_login_log_seq;
+DROP SEQUENCE IF EXISTS system_login_log_seq CASCADE;
 CREATE SEQUENCE system_login_log_seq
     START 1;
 
@@ -1563,7 +1563,7 @@ COMMENT ON COLUMN system_login_log.deleted IS '是否删除';
 COMMENT ON COLUMN system_login_log.tenant_id IS '租户编号';
 COMMENT ON TABLE system_login_log IS '系统访问记录';
 
-DROP SEQUENCE IF EXISTS system_mail_account_seq;
+DROP SEQUENCE IF EXISTS system_mail_account_seq CASCADE;
 CREATE SEQUENCE system_mail_account_seq
     START 1;
 
@@ -1618,7 +1618,7 @@ INSERT INTO system_mail_account (id, mail, username, password, host, port, ssl_e
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_mail_log_seq;
+DROP SEQUENCE IF EXISTS system_mail_log_seq CASCADE;
 CREATE SEQUENCE system_mail_log_seq
     START 1;
 
@@ -1677,7 +1677,7 @@ COMMENT ON COLUMN system_mail_log.update_time IS '更新时间';
 COMMENT ON COLUMN system_mail_log.deleted IS '是否删除';
 COMMENT ON TABLE system_mail_log IS '邮件日志表';
 
-DROP SEQUENCE IF EXISTS system_mail_template_seq;
+DROP SEQUENCE IF EXISTS system_mail_template_seq CASCADE;
 CREATE SEQUENCE system_mail_template_seq
     START 1;
 
@@ -1735,7 +1735,7 @@ INSERT INTO system_mail_template (id, name, code, account_id, nickname, title, c
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_menu_seq;
+DROP SEQUENCE IF EXISTS system_menu_seq CASCADE;
 CREATE SEQUENCE system_menu_seq
     START 1;
 
@@ -2709,7 +2709,7 @@ INSERT INTO system_menu (id, name, permission, type, sort, parent_id, path, icon
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_notice_seq;
+DROP SEQUENCE IF EXISTS system_notice_seq CASCADE;
 CREATE SEQUENCE system_notice_seq
     START 1;
 
@@ -2759,7 +2759,7 @@ INSERT INTO system_notice (id, title, content, type, status, creator, create_tim
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_notify_message_seq;
+DROP SEQUENCE IF EXISTS system_notify_message_seq CASCADE;
 CREATE SEQUENCE system_notify_message_seq
     START 1;
 
@@ -2827,7 +2827,7 @@ INSERT INTO system_notify_message (id, user_id, user_type, template_id, template
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_notify_template_seq;
+DROP SEQUENCE IF EXISTS system_notify_template_seq CASCADE;
 CREATE SEQUENCE system_notify_template_seq
     START 1;
 
@@ -2872,7 +2872,7 @@ COMMENT ON COLUMN system_notify_template.update_time IS '更新时间';
 COMMENT ON COLUMN system_notify_template.deleted IS '是否删除';
 COMMENT ON TABLE system_notify_template IS '站内信模板表';
 
-DROP SEQUENCE IF EXISTS system_oauth2_access_token_seq;
+DROP SEQUENCE IF EXISTS system_oauth2_access_token_seq CASCADE;
 CREATE SEQUENCE system_oauth2_access_token_seq
     START 1;
 
@@ -2922,7 +2922,7 @@ COMMENT ON COLUMN system_oauth2_access_token.deleted IS '是否删除';
 COMMENT ON COLUMN system_oauth2_access_token.tenant_id IS '租户编号';
 COMMENT ON TABLE system_oauth2_access_token IS 'OAuth2 访问令牌';
 
-DROP SEQUENCE IF EXISTS system_oauth2_approve_seq;
+DROP SEQUENCE IF EXISTS system_oauth2_approve_seq CASCADE;
 CREATE SEQUENCE system_oauth2_approve_seq
     START 1;
 
@@ -2965,7 +2965,7 @@ COMMENT ON COLUMN system_oauth2_approve.deleted IS '是否删除';
 COMMENT ON COLUMN system_oauth2_approve.tenant_id IS '租户编号';
 COMMENT ON TABLE system_oauth2_approve IS 'OAuth2 批准表';
 
-DROP SEQUENCE IF EXISTS system_oauth2_client_seq;
+DROP SEQUENCE IF EXISTS system_oauth2_client_seq CASCADE;
 CREATE SEQUENCE system_oauth2_client_seq
     START 1;
 
@@ -3036,7 +3036,7 @@ INSERT INTO system_oauth2_client (id, client_id, secret, name, logo, description
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_oauth2_code_seq;
+DROP SEQUENCE IF EXISTS system_oauth2_code_seq CASCADE;
 CREATE SEQUENCE system_oauth2_code_seq
     START 1;
 
@@ -3083,7 +3083,7 @@ COMMENT ON COLUMN system_oauth2_code.deleted IS '是否删除';
 COMMENT ON COLUMN system_oauth2_code.tenant_id IS '租户编号';
 COMMENT ON TABLE system_oauth2_code IS 'OAuth2 授权码表';
 
-DROP SEQUENCE IF EXISTS system_oauth2_refresh_token_seq;
+DROP SEQUENCE IF EXISTS system_oauth2_refresh_token_seq CASCADE;
 CREATE SEQUENCE system_oauth2_refresh_token_seq
     START 1;
 
@@ -3126,7 +3126,7 @@ COMMENT ON COLUMN system_oauth2_refresh_token.deleted IS '是否删除';
 COMMENT ON COLUMN system_oauth2_refresh_token.tenant_id IS '租户编号';
 COMMENT ON TABLE system_oauth2_refresh_token IS 'OAuth2 刷新令牌';
 
-DROP SEQUENCE IF EXISTS system_operate_log_seq;
+DROP SEQUENCE IF EXISTS system_operate_log_seq CASCADE;
 CREATE SEQUENCE system_operate_log_seq
     START 1;
 
@@ -3183,7 +3183,7 @@ COMMENT ON COLUMN system_operate_log.deleted IS '是否删除';
 COMMENT ON COLUMN system_operate_log.tenant_id IS '租户编号';
 COMMENT ON TABLE system_operate_log IS '操作日志记录 V2 版本';
 
-DROP SEQUENCE IF EXISTS system_post_seq;
+DROP SEQUENCE IF EXISTS system_post_seq CASCADE;
 CREATE SEQUENCE system_post_seq
     START 1;
 
@@ -3236,7 +3236,7 @@ INSERT INTO system_post (id, code, name, sort, status, remark, creator, create_t
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_role_seq;
+DROP SEQUENCE IF EXISTS system_role_seq CASCADE;
 CREATE SEQUENCE system_role_seq
     START 1;
 
@@ -3299,7 +3299,7 @@ INSERT INTO system_role (id, name, code, sort, data_scope, data_scope_dept_ids, 
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_role_menu_seq;
+DROP SEQUENCE IF EXISTS system_role_menu_seq CASCADE;
 CREATE SEQUENCE system_role_menu_seq
     START 1;
 
@@ -4205,7 +4205,7 @@ INSERT INTO system_role_menu (id, role_id, menu_id, creator, create_time, update
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_sms_channel_seq;
+DROP SEQUENCE IF EXISTS system_sms_channel_seq CASCADE;
 CREATE SEQUENCE system_sms_channel_seq
     START 1;
 
@@ -4259,7 +4259,7 @@ INSERT INTO system_sms_channel (id, signature, code, status, remark, api_key, ap
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_sms_code_seq;
+DROP SEQUENCE IF EXISTS system_sms_code_seq CASCADE;
 CREATE SEQUENCE system_sms_code_seq
     START 1;
 
@@ -4308,7 +4308,7 @@ COMMENT ON COLUMN system_sms_code.deleted IS '是否删除';
 COMMENT ON COLUMN system_sms_code.tenant_id IS '租户编号';
 COMMENT ON TABLE system_sms_code IS '手机验证码';
 
-DROP SEQUENCE IF EXISTS system_sms_log_seq;
+DROP SEQUENCE IF EXISTS system_sms_log_seq CASCADE;
 CREATE SEQUENCE system_sms_log_seq
     START 1;
 
@@ -4379,7 +4379,7 @@ COMMENT ON COLUMN system_sms_log.update_time IS '更新时间';
 COMMENT ON COLUMN system_sms_log.deleted IS '是否删除';
 COMMENT ON TABLE system_sms_log IS '短信日志';
 
-DROP SEQUENCE IF EXISTS system_sms_template_seq;
+DROP SEQUENCE IF EXISTS system_sms_template_seq CASCADE;
 CREATE SEQUENCE system_sms_template_seq
     START 1;
 
@@ -4451,7 +4451,7 @@ INSERT INTO system_sms_template (id, type, status, code, name, content, params, 
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_social_client_seq;
+DROP SEQUENCE IF EXISTS system_social_client_seq CASCADE;
 CREATE SEQUENCE system_social_client_seq
     START 1;
 
@@ -4511,7 +4511,7 @@ INSERT INTO system_social_client (id, name, social_type, user_type, client_id, c
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_social_user_seq;
+DROP SEQUENCE IF EXISTS system_social_user_seq CASCADE;
 CREATE SEQUENCE system_social_user_seq
     START 1;
 
@@ -4560,7 +4560,7 @@ COMMENT ON COLUMN system_social_user.deleted IS '是否删除';
 COMMENT ON COLUMN system_social_user.tenant_id IS '租户编号';
 COMMENT ON TABLE system_social_user IS '社交用户表';
 
-DROP SEQUENCE IF EXISTS system_social_user_bind_seq;
+DROP SEQUENCE IF EXISTS system_social_user_bind_seq CASCADE;
 CREATE SEQUENCE system_social_user_bind_seq
     START 1;
 
@@ -4599,7 +4599,7 @@ COMMENT ON COLUMN system_social_user_bind.deleted IS '是否删除';
 COMMENT ON COLUMN system_social_user_bind.tenant_id IS '租户编号';
 COMMENT ON TABLE system_social_user_bind IS '社交绑定表';
 
-DROP SEQUENCE IF EXISTS system_tenant_seq;
+DROP SEQUENCE IF EXISTS system_tenant_seq CASCADE;
 CREATE SEQUENCE system_tenant_seq
     START 1;
 
@@ -4657,7 +4657,7 @@ INSERT INTO system_tenant (id, name, contact_user_id, contact_name, contact_mobi
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_tenant_package_seq;
+DROP SEQUENCE IF EXISTS system_tenant_package_seq CASCADE;
 CREATE SEQUENCE system_tenant_package_seq
     START 1;
 
@@ -4704,7 +4704,7 @@ INSERT INTO system_tenant_package (id, name, status, remark, menu_ids, creator, 
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_user_post_seq;
+DROP SEQUENCE IF EXISTS system_user_post_seq CASCADE;
 CREATE SEQUENCE system_user_post_seq
     START 1;
 
@@ -4756,7 +4756,7 @@ INSERT INTO system_user_post (id, user_id, post_id, creator, create_time, update
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_user_role_seq;
+DROP SEQUENCE IF EXISTS system_user_role_seq CASCADE;
 CREATE SEQUENCE system_user_role_seq
     START 1;
 
@@ -4816,7 +4816,7 @@ INSERT INTO system_user_role (id, user_id, role_id, creator, create_time, update
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS system_users_seq;
+DROP SEQUENCE IF EXISTS system_users_seq CASCADE;
 CREATE SEQUENCE system_users_seq
     START 1;
 
@@ -4899,7 +4899,7 @@ INSERT INTO system_users (id, username, password, nickname, remark, dept_id, pos
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS yudao_demo01_contact_seq;
+DROP SEQUENCE IF EXISTS yudao_demo01_contact_seq CASCADE;
 CREATE SEQUENCE yudao_demo01_contact_seq
     START 1;
 
@@ -4949,7 +4949,7 @@ INSERT INTO yudao_demo01_contact (id, name, sex, birthday, description, avatar, 
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS yudao_demo02_category_seq;
+DROP SEQUENCE IF EXISTS yudao_demo02_category_seq CASCADE;
 CREATE SEQUENCE yudao_demo02_category_seq
     START 1;
 
@@ -4998,7 +4998,7 @@ INSERT INTO yudao_demo02_category (id, name, parent_id, creator, create_time, up
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS yudao_demo03_course_seq;
+DROP SEQUENCE IF EXISTS yudao_demo03_course_seq CASCADE;
 CREATE SEQUENCE yudao_demo03_course_seq
     START 1;
 
@@ -5060,7 +5060,7 @@ INSERT INTO yudao_demo03_course (id, student_id, name, score, creator, create_ti
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS yudao_demo03_grade_seq;
+DROP SEQUENCE IF EXISTS yudao_demo03_grade_seq CASCADE;
 CREATE SEQUENCE yudao_demo03_grade_seq
     START 1;
 
@@ -5108,7 +5108,7 @@ INSERT INTO yudao_demo03_grade (id, student_id, name, teacher, creator, create_t
 COMMIT;
 -- @formatter:on
 
-DROP SEQUENCE IF EXISTS yudao_demo03_student_seq;
+DROP SEQUENCE IF EXISTS yudao_demo03_student_seq CASCADE;
 CREATE SEQUENCE yudao_demo03_student_seq
     START 1;
 

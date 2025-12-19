@@ -85,4 +85,12 @@ public interface MemberAuthService {
      */
     AppAuthLoginRespVO refreshToken(String refreshToken);
 
+    /**
+     * 获取 NodeBB 单点登录信息
+     *
+     * @param userId 用户编号
+     * @return SSO 信息
+     */
+    AppAuthNodebbSsoRespVO getNodeBBSso(Long userId);
+
 }

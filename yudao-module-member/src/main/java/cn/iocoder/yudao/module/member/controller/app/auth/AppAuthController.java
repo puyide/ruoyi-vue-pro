@@ -132,4 +132,13 @@ public class AppAuthController {
         return success(AuthConvert.INSTANCE.convert(signature));
     }
 
+    // ========== NodeBB 单点登录相关 ==========
+
+    @GetMapping("/nodebb-sso")
+    @Operation(summary = "获取 NodeBB 单点登录信息")
+    public CommonResult<AppAuthNodebbSsoRespVO> getNodeBBSso() {
+        Long userId = getLoginUserId();
+        return success(authService.getNodeBBSso(userId));
+    }
+
 }

@@ -50,6 +50,8 @@ public class MemberAuthServiceImpl implements MemberAuthService {
     @Resource
     private MemberUserService userService;
     @Resource
+    private cn.iocoder.yudao.module.member.service.nodebb.NodebbService nodebbService;
+    @Resource
     private SmsCodeApi smsCodeApi;
     @Resource
     private LoginLogApi loginLogApi;
@@ -280,6 +282,11 @@ public class MemberAuthServiceImpl implements MemberAuthService {
 
     private UserTypeEnum getUserType() {
         return UserTypeEnum.MEMBER;
+    }
+
+    @Override
+    public AppAuthNodebbSsoRespVO getNodeBBSso(Long userId) {
+        return nodebbService.buildSso(userId);
     }
 
 }

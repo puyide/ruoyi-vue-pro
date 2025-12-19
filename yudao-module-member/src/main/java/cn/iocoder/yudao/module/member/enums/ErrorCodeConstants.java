@@ -20,6 +20,8 @@ public interface ErrorCodeConstants {
     ErrorCode AUTH_LOGIN_USER_DISABLED = new ErrorCode(1_004_003_001, "登录失败，账号被禁用");
     ErrorCode AUTH_SOCIAL_USER_NOT_FOUND = new ErrorCode(1_004_003_005, "登录失败，解析不到三方登录信息");
     ErrorCode AUTH_MOBILE_USED = new ErrorCode(1_004_003_007, "手机号已经被使用");
+    ErrorCode NODEBB_NOT_ENABLED = new ErrorCode(1_004_003_100, "NodeBB 集成未启用");
+    ErrorCode NODEBB_USER_NOT_SYNCED = new ErrorCode(1_004_003_101, "用户尚未同步到 NodeBB");
 
     // ========== 用户收件地址 1-004-004-000 ==========
     ErrorCode ADDRESS_NOT_EXISTS = new ErrorCode(1_004_004_000, "用户收件地址不存在");
@@ -54,5 +56,42 @@ public interface ErrorCodeConstants {
     //========== 用户分组 1-004-012-000 ==========
     ErrorCode GROUP_NOT_EXISTS = new ErrorCode(1_004_012_000, "用户分组不存在");
     ErrorCode GROUP_HAS_USER = new ErrorCode(1_004_012_001, "用户分组下存在用户，无法删除");
+
+    //========== 儿童信息 1-004-013-000 ==========
+    ErrorCode CHILDREN_NOT_EXISTS = new ErrorCode(1_004_013_000, "儿童信息不存在");
+
+    //========== 信用分 1-004-014-000 ==========
+    ErrorCode CREDIT_SCORE_NOT_EXISTS = new ErrorCode(1_004_014_000, "信用分记录不存在");
+    ErrorCode CREDIT_SCORE_NOT_ENOUGH = new ErrorCode(1_004_014_001, "信用分不足");
+
+    //========== 同行小组 1-004-015-000 ==========
+    ErrorCode PEER_GROUP_NOT_EXISTS = new ErrorCode(1_004_015_000, "同行小组不存在");
+    ErrorCode PEER_GROUP_NOT_ENABLED = new ErrorCode(1_004_015_001, "同行小组已关闭");
+    ErrorCode PEER_GROUP_ALREADY_JOINED = new ErrorCode(1_004_015_002, "您已经是该小组成员");
+    ErrorCode PEER_GROUP_MEMBER_FULL = new ErrorCode(1_004_015_003, "小组成员已满");
+    ErrorCode PEER_GROUP_INVITE_ONLY = new ErrorCode(1_004_015_004, "该小组仅限邀请加入");
+    ErrorCode PEER_GROUP_NOT_MEMBER = new ErrorCode(1_004_015_005, "您不是该小组成员");
+    ErrorCode PEER_GROUP_OWNER_CANNOT_LEAVE = new ErrorCode(1_004_015_006, "群主不能退出，请先转让群主身份");
+    ErrorCode PEER_GROUP_CANNOT_REMOVE_OWNER = new ErrorCode(1_004_015_007, "不能移除群主");
+    ErrorCode PEER_GROUP_JOIN_REQUEST_NOT_FOUND = new ErrorCode(1_004_015_008, "加入申请不存在");
+    ErrorCode PEER_GROUP_JOIN_REQUEST_ALREADY_PROCESSED = new ErrorCode(1_004_015_009, "加入申请已处理");
+    ErrorCode PEER_GROUP_JOIN_REQUEST_EXISTS = new ErrorCode(1_004_015_010, "已有待审核的加入申请");
+
+    //========== 训练模块 1-004-016-000 ==========
+    ErrorCode TRAINING_TEMPLATE_NOT_EXISTS = new ErrorCode(1_004_016_000, "训练模板不存在");
+    ErrorCode TRAINING_SESSION_NOT_EXISTS = new ErrorCode(1_004_016_001, "训练会话不存在");
+    ErrorCode TRAINING_SESSION_STATUS_ERROR = new ErrorCode(1_004_016_002, "训练会话状态不正确");
+    ErrorCode TRAINING_LOG_NOT_EXISTS = new ErrorCode(1_004_016_003, "训练日志不存在");
+    ErrorCode TRAINING_LOG_ALREADY_EXISTS = new ErrorCode(1_004_016_004, "该训练会话已打卡");
+
+    //========== 社区模块 1-004-017-000 ==========
+    ErrorCode COMMUNITY_TOPIC_NOT_EXISTS = new ErrorCode(1_004_017_000, "帖子不存在");
+    ErrorCode COMMUNITY_POST_NOT_EXISTS = new ErrorCode(1_004_017_001, "回帖不存在");
+    ErrorCode COMMUNITY_NODEBB_USER_NOT_EXISTS = new ErrorCode(1_004_017_002, "社区用户不存在，请先登录");
+    ErrorCode COMMUNITY_CONTENT_MODERATION_FAILED = new ErrorCode(1_004_017_003, "内容审核未通过：{}");
+    ErrorCode COMMUNITY_TOPIC_CREATE_FAILED = new ErrorCode(1_004_017_004, "发帖失败，请稍后重试");
+    ErrorCode COMMUNITY_REPLY_CREATE_FAILED = new ErrorCode(1_004_017_005, "回帖失败，请稍后重试");
+    ErrorCode COMMUNITY_OPERATION_FAILED = new ErrorCode(1_004_017_006, "操作失败，请稍后重试");
+    ErrorCode COMMUNITY_RATE_LIMIT_EXCEEDED = new ErrorCode(1_004_017_007, "操作过于频繁，请稍后再试");
 
 }
