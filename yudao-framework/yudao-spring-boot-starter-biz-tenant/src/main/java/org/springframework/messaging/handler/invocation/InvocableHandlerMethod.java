@@ -225,7 +225,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
         return new AsyncResultMethodParameter(returnValue);
     }
 
-    private class AsyncResultMethodParameter extends HandlerMethodParameter {
+    private class AsyncResultMethodParameter extends AnnotatedMethodParameter {
 
         @Nullable
         private final Object returnValue;

@@ -8,7 +8,7 @@ import cn.iocoder.yudao.module.infra.framework.file.core.client.s3.S3FileClientC
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.Validation;
+import jakarta.validation.Validation;
 
 @SuppressWarnings("resource")
 public class S3FileClientTest {

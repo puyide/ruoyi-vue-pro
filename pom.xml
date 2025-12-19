@@ -15,12 +15,12 @@
         <!-- 各种 module 拓展 -->
         <module>yudao-module-system</module>
         <module>yudao-module-infra</module>
-<!--        <module>yudao-module-member</module>-->
+        <module>yudao-module-member</module>
 <!--        <module>yudao-module-bpm</module>-->
 <!--        <module>yudao-module-report</module>-->
 <!--        <module>yudao-module-mp</module>-->
-<!--        <module>yudao-module-pay</module>-->
-<!--        <module>yudao-module-mall</module>-->
+        <module>yudao-module-pay</module>
+        <module>yudao-module-mall</module>
 <!--        <module>yudao-module-crm</module>-->
 <!--        <module>yudao-module-erp</module>-->
 <!--        <module>yudao-module-iot</module>-->
@@ -33,9 +33,9 @@
     <url>https://github.com/YunaiV/ruoyi-vue-pro</url>
 
     <properties>
-        <revision>2025.11-jdk8-SNAPSHOT</revision>
+        <revision>2025.11-SNAPSHOT</revision>
         <!-- Maven 相关 -->
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
@@ -43,7 +43,7 @@
         <flatten-maven-plugin.version>1.7.2</flatten-maven-plugin.version>
         <!-- maven-surefire-plugin 暂时无法通过 bom 的依赖读取（兼容老版本 IDEA 2024 及以前版本） -->
         <lombok.version>1.18.42</lombok.version>
-        <spring.boot.version>2.7.18</spring.boot.version>
+        <spring.boot.version>3.4.1</spring.boot.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>

@@ -11,7 +11,7 @@ import cn.iocoder.yudao.module.iot.gateway.service.device.message.IotDeviceMessa
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 /**
  * IoT 网关 TCP 下游订阅者：接收下行给设备的消息

@@ -7,7 +7,7 @@ import cn.iocoder.yudao.module.iot.service.rule.scene.IotSceneRuleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 // TODO @puhui999：后面重构哈
