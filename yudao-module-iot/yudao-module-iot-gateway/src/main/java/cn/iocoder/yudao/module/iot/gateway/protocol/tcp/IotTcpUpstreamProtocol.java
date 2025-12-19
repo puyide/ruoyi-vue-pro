@@ -13,8 +13,8 @@ import io.vertx.core.net.PemKeyCertOptions;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
 /**
  * IoT 网关 TCP 协议：接收设备上行消息
