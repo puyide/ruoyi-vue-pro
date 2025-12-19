@@ -1,0 +1,143 @@
+<!--pages/institution-detail/institution-detail.wxml-->
+<view class="institution-detail-page">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">{{institution.name}}</text>
+    <view class="nav-share" bindtap="shareInstitution">
+      <text class="share-icon">⤴</text>
+    </view>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+    <!-- 机构头图 -->
+    <view class="institution-cover" wx:if="{{institution.images.length > 0}}">
+      <swiper class="cover-swiper" indicator-dots autoplay circular>
+        <swiper-item wx:for="{{institution.images}}" wx:key="*this">
+          <image src="{{item}}" mode="aspectFill" class="cover-image"></image>
+        </swiper-item>
+      </swiper>
+    </view>
+
+    <!-- 基本信息卡片 -->
+    <view class="info-card card">
+      <text class="institution-name">{{institution.name}}</text>
+      
+      <view class="institution-tags">
+        <view class="inst-tag" wx:for="{{institution.tags}}" wx:key="*this">
+          {{item}}
+        </view>
+      </view>
+
+      <view class="info-row">
+        <text class="info-icon">📍</text>
+        <text class="info-text">{{institution.address}}</text>
+        <view class="info-action" bindtap="openMap">导航</view>
+      </view>
+
+      <view class="info-row">
+        <text class="info-icon">📞</text>
+        <text class="info-text">{{institution.phone}}</text>
+        <view class="info-action" bindtap="callPhone">拨打</view>
+      </view>
+
+      <view class="info-row" wx:if="{{institution.openTime}}">
+        <text class="info-icon">🕐</text>
+        <text class="info-text">{{institution.openTime}}</text>
+      </view>
+    </view>
+
+    <!-- 评分卡片 -->
+    <view class="rating-card card">
+      <view class="rating-header">
+        <text class="section-title">综合评分</text>
+        <view class="overall-rating">
+          <text class="rating-star">⭐</text>
+          <text class="rating-value">{{institution.rating}}</text>
+        </view>
+      </view>
+
+      <view class="rating-details">
+        <view class="rating-item">
+          <text class="rating-label">师资水平</text>
+          <view class="rating-bar-wrapper">
+            <view class="rating-bar" style="width: {{institution.ratings.teacher * 20}}%"></view>
+          </view>
+          <text class="rating-score">{{institution.ratings.teacher}}</text>
+        </view>
+        <view class="rating-item">
+          <text class="rating-label">环境设施</text>
+          <view class="rating-bar-wrapper">
+            <view class="rating-bar" style="width: {{institution.ratings.environment * 20}}%"></view>
+          </view>
+          <text class="rating-score">{{institution.ratings.environment}}</text>
+        </view>
+        <view class="rating-item">
+          <text class="rating-label">透明度</text>
+          <view class="rating-bar-wrapper">
+            <view class="rating-bar" style="width: {{institution.ratings.transparency * 20}}%"></view>
+          </view>
+          <text class="rating-score">{{institution.ratings.transparency}}</text>
+        </view>
+        <view class="rating-item">
+          <text class="rating-label">效果反馈</text>
+          <view class="rating-bar-wrapper">
+            <view class="rating-bar" style="width: {{institution.ratings.effect * 20}}%"></view>
+          </view>
+          <text class="rating-score">{{institution.ratings.effect}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 家长短评 -->
+    <view class="review-card card">
+      <view class="section-header">
+        <text class="section-title">家长短评</text>
+        <text class="review-count">({{reviews.length}}条)</text>
+      </view>
+
+      <view class="review-list" wx:if="{{reviews.length > 0}}">
+        <view class="review-item" wx:for="{{reviews}}" wx:key="id">
+          <view class="review-header">
+            <view class="reviewer-info">
+              <view class="avatar avatar-sm">
+                <text class="avatar-text">{{item.author.nickname[0]}}</text>
+              </view>
+              <text class="reviewer-name">{{item.author.nickname}}</text>
+            </view>
+            <view class="review-rating">
+              <text class="mini-star">⭐</text>
+              <text>{{item.rating}}</text>
+            </view>
+          </view>
+          <text class="review-content">{{item.content}}</text>
+          <text class="review-time">{{item.timeAgo}}</text>
+        </view>
+      </view>
+
+      <view class="empty-review" wx:else>
+        <text>暂无评价，来写第一条吧</text>
+      </view>
+
+      <view class="view-all-btn" wx:if="{{reviews.length > 3}}" bindtap="viewAllReviews">
+        查看全部评价 ›
+      </view>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-space"></view>
+  </scroll-view>
+
+  <!-- 底部操作栏 -->
+  <view class="action-bar safe-area-bottom">
+    <button class="btn btn-outline flex-1" bindtap="reportError">
+      信息纠错
+    </button>
+    <button class="btn btn-primary flex-1" bindtap="writeReview">
+      评价机构
+    </button>
+  </view>
+</view>
+

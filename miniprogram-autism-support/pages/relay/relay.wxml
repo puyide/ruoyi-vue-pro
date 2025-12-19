@@ -1,0 +1,175 @@
+<!--pages/relay/relay.wxml-->
+<view class="relay-page">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">成长接力</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <!-- 发布按钮 -->
+  <view class="publish-section">
+    <button class="publish-btn" bindtap="goToPublish">
+      <text class="publish-icon">+</text>
+      <text>发布好物</text>
+    </button>
+    <text class="publish-tip">把闲置好物传递给需要的家庭</text>
+  </view>
+
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <scroll-view class="filter-scroll" scroll-x enable-flex>
+      <view 
+        class="filter-item {{currentFilter.age === item.value ? 'active' : ''}}"
+        wx:for="{{ageFilters}}"
+        wx:key="value"
+        bindtap="selectAgeFilter"
+        data-value="{{item.value}}"
+      >
+        {{item.label}}
+      </view>
+    </scroll-view>
+    
+    <view class="filter-actions">
+      <view class="filter-dropdown" bindtap="showTypeFilter">
+        <text>{{currentFilter.typeLabel || '类型'}}</text>
+        <text class="dropdown-arrow">▼</text>
+      </view>
+      <view class="filter-dropdown" bindtap="showMethodFilter">
+        <text>{{currentFilter.methodLabel || '方式'}}</text>
+        <text class="dropdown-arrow">▼</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 好物列表 -->
+  <scroll-view 
+    class="item-scroll"
+    scroll-y
+    bindscrolltolower="loadMore"
+    refresher-enabled
+    bindrefresherrefresh="onRefresh"
+    refresher-triggered="{{isRefreshing}}"
+  >
+    <view class="item-list">
+      <view 
+        class="item-card card"
+        wx:for="{{items}}"
+        wx:key="id"
+        bindtap="goToDetail"
+        data-id="{{item.id}}"
+      >
+        <!-- 好物图片 -->
+        <view class="item-image-wrapper">
+          <image 
+            class="item-image" 
+            src="{{item.photos[0] || '/assets/images/placeholder.png'}}" 
+            mode="aspectFill"
+          ></image>
+          <view class="item-method-badge {{item.method}}">
+            {{item.methodText}}
+          </view>
+        </view>
+
+        <!-- 好物信息 -->
+        <view class="item-info">
+          <text class="item-name">{{item.title}}</text>
+          
+          <view class="item-tags">
+            <view class="item-tag condition">{{item.condition}}</view>
+            <view class="item-tag type">{{item.type}}</view>
+          </view>
+
+          <view class="item-meta">
+            <view class="meta-item">
+              <text class="meta-icon">👶</text>
+              <text>{{item.ageGroup}}</text>
+            </view>
+          </view>
+
+          <view class="item-footer">
+            <view class="giver-info">
+              <view class="avatar avatar-sm">
+                <text class="avatar-text">{{item.giver.nickname[0]}}</text>
+              </view>
+              <text class="giver-name">{{item.giver.nickname}}</text>
+            </view>
+            <view class="relay-btn">
+              <text>我要接力</text>
+              <text class="btn-arrow">›</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="loading-more" wx:if="{{isLoading}}">
+      <view class="loading-spinner"></view>
+      <text>加载中...</text>
+    </view>
+
+    <!-- 没有更多 -->
+    <view class="no-more" wx:if="{{noMore && items.length > 0}}">
+      <text>— 没有更多了 —</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{items.length === 0 && !isLoading}}">
+      <text class="empty-icon">📦</text>
+      <text class="empty-text">暂无可接力的好物</text>
+      <text class="empty-tip">快来发布第一件吧！</text>
+      <button class="btn btn-primary mt-lg" bindtap="goToPublish">发布好物</button>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-space safe-area-bottom"></view>
+  </scroll-view>
+</view>
+
+<!-- 类型筛选弹窗 -->
+<view class="filter-modal" wx:if="{{showTypeModal}}" bindtap="hideTypeFilter">
+  <view class="filter-modal-content" catchtap>
+    <view class="filter-modal-header">
+      <text>选择类型</text>
+      <view class="modal-close" bindtap="hideTypeFilter">✕</view>
+    </view>
+    <view class="filter-options">
+      <view 
+        class="filter-option {{currentFilter.type === item.value ? 'selected' : ''}}"
+        wx:for="{{typeFilters}}"
+        wx:key="value"
+        bindtap="selectTypeFilter"
+        data-value="{{item.value}}"
+        data-label="{{item.label}}"
+      >
+        {{item.label}}
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 方式筛选弹窗 -->
+<view class="filter-modal" wx:if="{{showMethodModal}}" bindtap="hideMethodFilter">
+  <view class="filter-modal-content" catchtap>
+    <view class="filter-modal-header">
+      <text>选择方式</text>
+      <view class="modal-close" bindtap="hideMethodFilter">✕</view>
+    </view>
+    <view class="filter-options">
+      <view 
+        class="filter-option {{currentFilter.method === item.value ? 'selected' : ''}}"
+        wx:for="{{methodFilters}}"
+        wx:key="value"
+        bindtap="selectMethodFilter"
+        data-value="{{item.value}}"
+        data-label="{{item.label}}"
+      >
+        {{item.label}}
+      </view>
+    </view>
+  </view>
+</view>
+

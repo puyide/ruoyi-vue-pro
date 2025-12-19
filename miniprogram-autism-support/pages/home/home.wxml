@@ -1,0 +1,121 @@
+<!--pages/home/home.wxml-->
+<view class="home-page">
+  <!-- 搜索框 -->
+  <view class="search-section" bindtap="goToSearch">
+    <view class="search-bar">
+      <image class="search-icon" src="/assets/icons/search.svg" mode="aspectFit"></image>
+      <text class="search-placeholder">搜索机构/经验/问题</text>
+    </view>
+  </view>
+
+  <!-- 今日微锦囊 -->
+  <view class="tip-card card card-elevated fade-in" bindtap="goToTipDetail">
+    <view class="tip-header">
+      <view class="tip-icon">🧠</view>
+      <text class="tip-title">今日微锦囊</text>
+      <view class="tip-badge">NEW</view>
+    </view>
+    <view class="tip-content">
+      <text class="tip-main-title">{{dailyTip.title}}</text>
+      <text class="tip-advice">{{dailyTip.advice}}</text>
+    </view>
+    <view class="tip-footer">
+      <text class="tip-source">来源：@{{dailyTip.author}}</text>
+      <view class="tip-arrow">
+        <text class="arrow-text">查看详情</text>
+        <text class="arrow-icon">→</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 金刚区 -->
+  <view class="quick-entry-section">
+    <view class="quick-entry-grid">
+      <view class="quick-entry-item" bindtap="goToTraining">
+        <view class="entry-icon-wrapper training-bg">
+          <text class="entry-emoji">🎯</text>
+        </view>
+        <text class="entry-text">训练助手</text>
+      </view>
+      <view class="quick-entry-item" bindtap="goToCommunity">
+        <view class="entry-icon-wrapper community-bg">
+          <text class="entry-emoji">💬</text>
+        </view>
+        <text class="entry-text">经验社区</text>
+      </view>
+      <view class="quick-entry-item" bindtap="goToRelay">
+        <view class="entry-icon-wrapper relay-bg">
+          <text class="entry-emoji">🎁</text>
+        </view>
+        <text class="entry-text">成长接力</text>
+      </view>
+      <view class="quick-entry-item" bindtap="goToGroup">
+        <view class="entry-icon-wrapper group-bg">
+          <text class="entry-emoji">👥</text>
+        </view>
+        <text class="entry-text">同行小组</text>
+      </view>
+      <view class="quick-entry-item" bindtap="goToResource">
+        <view class="entry-icon-wrapper resource-bg">
+          <text class="entry-emoji">📍</text>
+        </view>
+        <text class="entry-text">资源黄页</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 精选经验 -->
+  <view class="featured-section">
+    <view class="section-header">
+      <text class="section-title">精选经验</text>
+      <view class="section-more" bindtap="goToCommunity">
+        <text>查看更多</text>
+        <text class="more-arrow">›</text>
+      </view>
+    </view>
+
+    <view class="post-list">
+      <view 
+        class="post-card card fade-in" 
+        wx:for="{{featuredPosts}}" 
+        wx:key="id"
+        style="animation-delay: {{index * 0.1}}s"
+        bindtap="goToPostDetail"
+        data-id="{{item.id}}"
+      >
+        <view class="post-header">
+          <text class="post-title ellipsis-2">{{item.title}}</text>
+        </view>
+        <view class="post-tags">
+          <view class="tag tag-primary" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">
+            #{{tag}}
+          </view>
+        </view>
+        <view class="post-summary">
+          <view class="ai-badge">
+            <text class="ai-icon">✨</text>
+            <text>AI 摘要</text>
+          </view>
+          <text class="summary-text ellipsis-2">{{item.aiSummary}}</text>
+        </view>
+        <view class="post-footer">
+          <view class="post-stats">
+            <view class="stat-item">
+              <image class="stat-icon" src="/assets/icons/view.svg" mode="aspectFit"></image>
+              <text>{{item.viewCount}}</text>
+            </view>
+            <view class="stat-item">
+              <image class="stat-icon" src="/assets/icons/comment.svg" mode="aspectFit"></image>
+              <text>{{item.commentCount}}</text>
+            </view>
+          </view>
+          <text class="post-time">{{item.timeAgo}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部留白 -->
+  <view class="bottom-space safe-area-bottom"></view>
+</view>
+

@@ -1,0 +1,56 @@
+### 请先登录获取 token，可以从 AppAuthController.http 中获取
+
+### 创建儿童信息
+POST {{baseUrl}}/member/children/create
+Authorization: Bearer {{token}}
+Content-Type: application/json
+tenant-id: {{tenantId}}
+
+{
+  "nickname": "小明",
+  "avatarUrl": "http://example.com/avatar.jpg",
+  "gender": "male",
+  "ageYears": 5,
+  "ageGroup": "3-6",
+  "diagnosisDate": "2023-01-15 10:30:00",
+  "guardianRelation": "father",
+  "statusTags": ["LANGUAGE_DELAY", "SOCIAL_DIFFICULTY"],
+  "goalTags": ["LANGUAGE_MIMIC", "KINDERGARTEN_PREP"],
+  "description": "喜欢听音乐，对色彩敏感"
+}
+
+### 更新儿童信息
+PUT {{baseUrl}}/member/children/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+tenant-id: {{tenantId}}
+
+{
+  "id": 1,
+  "nickname": "小明",
+  "avatarUrl": "http://example.com/avatar2.jpg",
+  "gender": "male",
+  "ageYears": 6,
+  "ageGroup": "6-12",
+  "diagnosisDate": "2023-01-15 10:30:00",
+  "guardianRelation": "father",
+  "statusTags": ["LANGUAGE_DELAY", "SOCIAL_DIFFICULTY", "SENSORY_SENSITIVITY"],
+  "goalTags": ["LANGUAGE_MIMIC", "KINDERGARTEN_PREP", "SOCIAL_SKILLS"],
+  "description": "喜欢听音乐，对色彩敏感，最近进步很大"
+}
+
+### 删除儿童信息
+DELETE {{baseUrl}}/member/children/delete?id=1
+Authorization: Bearer {{token}}
+tenant-id: {{tenantId}}
+
+### 获得儿童信息详情
+GET {{baseUrl}}/member/children/get?id=1
+Authorization: Bearer {{token}}
+tenant-id: {{tenantId}}
+
+### 获得儿童信息列表
+GET {{baseUrl}}/member/children/list
+Authorization: Bearer {{token}}
+tenant-id: {{tenantId}}
+

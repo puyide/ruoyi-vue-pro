@@ -1,0 +1,47 @@
+=======================================
+  最简单的执行方式 - 3个文件
+=======================================
+
+在DataGrip中依次打开并执行：
+
+✅ 1. mall_base_ddl.sql
+      创建49个商城表
+      时间：5秒
+      
+✅ 2. mall_base_dml.sql
+      插入商城数据
+      时间：1分钟
+      
+✅ 3. equipment_renovation_standalone.sql
+      器材共享改造（独立版）
+      时间：10秒
+      ⭐ 不依赖system表
+
+可选：
+✅ 4. equipment_handover_standalone.sql
+      交接会话功能（独立版）
+      时间：10秒
+      ⭐ 不依赖system表
+
+=======================================
+
+完成后验证：
+
+\dt                 -- 应该看到52+个表
+SELECT * FROM product_brand;
+SELECT * FROM member_credit_score;
+SELECT * FROM equipment_handover;
+
+=======================================
+
+✅ 优势：
+- 不需要执行 ruoyi-vue-pro.sql
+- 可以立即开始
+- 数据字典后续在管理后台配置
+
+📚 详细说明：
+- 🔥_快速解决方案.md
+- ⭐️_完整部署指南.md
+
+=======================================
+

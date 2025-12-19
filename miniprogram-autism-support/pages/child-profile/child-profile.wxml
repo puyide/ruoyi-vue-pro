@@ -1,0 +1,117 @@
+<!--pages/child-profile/child-profile.wxml-->
+<view class="child-profile-page">
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">孩子档案</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <scroll-view class="form-scroll" scroll-y>
+    <!-- 基本信息 -->
+    <view class="form-section">
+      <text class="section-title">基本信息</text>
+      
+      <view class="form-item">
+        <text class="form-label">孩子昵称</text>
+        <input 
+          class="form-input"
+          placeholder="给孩子取个昵称吧"
+          value="{{childProfile.nickname}}"
+          bindinput="onNicknameInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">年龄段</text>
+        <view class="option-group">
+          <view 
+            class="option-item {{childProfile.ageRange === item ? 'selected' : ''}}"
+            wx:for="{{ageOptions}}"
+            wx:key="*this"
+            bindtap="selectAge"
+            data-value="{{item}}"
+          >
+            <text>{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">性别</text>
+        <view class="option-group">
+          <view 
+            class="option-item {{childProfile.gender === item.value ? 'selected' : ''}}"
+            wx:for="{{genderOptions}}"
+            wx:key="value"
+            bindtap="selectGender"
+            data-value="{{item.value}}"
+          >
+            <text>{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 初步状况 -->
+    <view class="form-section">
+      <text class="section-title">初步状况</text>
+      <text class="section-desc">选择孩子目前面临的主要挑战（可多选）</text>
+      
+      <view class="checkbox-group">
+        <view 
+          class="checkbox-item {{childProfile.conditions.includes(item) ? 'selected' : ''}}"
+          wx:for="{{conditionOptions}}"
+          wx:key="*this"
+          bindtap="toggleCondition"
+          data-value="{{item}}"
+        >
+          <view class="checkbox-box">
+            <text wx:if="{{childProfile.conditions.includes(item)}}">✓</text>
+          </view>
+          <text class="checkbox-label">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 训练目标 -->
+    <view class="form-section">
+      <text class="section-title">训练目标</text>
+      <text class="section-desc">选择希望改善的方面（可多选）</text>
+      
+      <view class="checkbox-group">
+        <view 
+          class="checkbox-item {{childProfile.goals.includes(item) ? 'selected' : ''}}"
+          wx:for="{{goalOptions}}"
+          wx:key="*this"
+          bindtap="toggleGoal"
+          data-value="{{item}}"
+        >
+          <view class="checkbox-box">
+            <text wx:if="{{childProfile.goals.includes(item)}}">✓</text>
+          </view>
+          <text class="checkbox-label">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 隐私提示 -->
+    <view class="privacy-tip">
+      <text class="tip-icon">🔒</text>
+      <text class="tip-text">以上信息仅用于为您推荐更适合的内容，我们会严格保护您的隐私。</text>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-space"></view>
+  </scroll-view>
+
+  <!-- 保存按钮 -->
+  <view class="action-bar safe-area-bottom">
+    <button class="btn btn-primary btn-block" bindtap="saveProfile">
+      保存
+    </button>
+  </view>
+</view>
+

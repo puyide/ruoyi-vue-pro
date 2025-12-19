@@ -1,0 +1,186 @@
+<!--pages/relay-detail/relay-detail.wxml-->
+<view class="relay-detail-page">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">好物详情</text>
+    <view class="nav-share" bindtap="shareItem">
+      <text>分享</text>
+    </view>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+    <!-- 好物图片 -->
+    <view class="image-section">
+      <swiper 
+        class="image-swiper" 
+        indicator-dots="{{item.photos.length > 1}}"
+        autoplay
+        circular
+      >
+        <swiper-item wx:for="{{item.photos}}" wx:key="*this">
+          <image 
+            src="{{item}}" 
+            mode="aspectFill" 
+            class="item-image"
+            bindtap="previewImage"
+            data-url="{{item}}"
+          ></image>
+        </swiper-item>
+        <swiper-item wx:if="{{item.photos.length === 0}}">
+          <view class="placeholder-image">
+            <text class="placeholder-icon">📦</text>
+            <text class="placeholder-text">暂无图片</text>
+          </view>
+        </swiper-item>
+      </swiper>
+      
+      <!-- 方式标签 -->
+      <view class="method-badge {{item.method}}">
+        {{item.methodText}}
+      </view>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="info-card card">
+      <text class="item-title">{{item.title}}</text>
+      
+      <view class="info-grid">
+        <view class="info-item">
+          <text class="info-label">新旧程度</text>
+          <text class="info-value highlight">{{item.condition}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">适用年龄</text>
+          <text class="info-value">{{item.ageGroup}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">好物类型</text>
+          <text class="info-value">{{item.type}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">交付方式</text>
+          <text class="info-value">{{item.deliveryText}}</text>
+        </view>
+      </view>
+
+      <view class="description-section" wx:if="{{item.description}}">
+        <text class="section-label">物品说明</text>
+        <text class="description-text">{{item.description}}</text>
+      </view>
+    </view>
+
+    <!-- 赠送/交易方式 -->
+    <view class="method-card card">
+      <view class="method-header">
+        <text class="section-title">接力方式</text>
+      </view>
+      <view class="method-info">
+        <view class="method-item">
+          <text class="method-icon">🎁</text>
+          <view class="method-content">
+            <text class="method-type">{{item.methodText}}</text>
+            <text class="method-desc" wx:if="{{item.method === 'give'}}">免费赠送给需要的家庭</text>
+            <text class="method-desc" wx:elif="{{item.method === 'borrow'}}">借用一段时间后归还</text>
+            <text class="method-desc" wx:else>低于市场价转让，价格面议</text>
+          </view>
+        </view>
+        <view class="method-item">
+          <text class="method-icon">📦</text>
+          <view class="method-content">
+            <text class="method-type">{{item.deliveryText}}</text>
+            <text class="method-desc" wx:if="{{item.delivery === 'face_to_face'}}">同城面对面交接</text>
+            <text class="method-desc" wx:else>支持快递寄送（运费到付）</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 发布者信息 -->
+    <view class="giver-card card">
+      <view class="giver-header">
+        <view class="giver-avatar avatar">
+          <text class="avatar-text">{{item.giver.nickname[0]}}</text>
+        </view>
+        <view class="giver-info">
+          <text class="giver-name">{{item.giver.nickname}}</text>
+          <text class="publish-time">发布于 {{item.publishTime}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 温馨提示 -->
+    <view class="tip-card">
+      <text class="tip-icon">💡</text>
+      <view class="tip-content">
+        <text class="tip-title">温馨提示</text>
+        <text class="tip-text">• 接力申请需双方同意后才能交换联系方式</text>
+        <text class="tip-text">• 请勿在申请中填写手机号、地址等敏感信息</text>
+        <text class="tip-text">• 交接完成后别忘了给对方写一句感谢</text>
+      </view>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-space"></view>
+  </scroll-view>
+
+  <!-- 底部操作栏 -->
+  <view class="action-bar safe-area-bottom">
+    <button class="btn btn-primary btn-block btn-lg" bindtap="applyRelay">
+      发起接力申请
+    </button>
+  </view>
+</view>
+
+<!-- 接力申请弹窗 -->
+<view class="modal-mask" wx:if="{{showApplyModal}}" bindtap="hideApplyModal">
+  <view class="apply-modal" catchtap>
+    <view class="modal-header">
+      <text class="modal-title">你想接力这个好物吗？</text>
+      <view class="modal-close" bindtap="hideApplyModal">✕</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="form-label">请简单说明用途（选填）</text>
+        <textarea 
+          class="apply-textarea"
+          placeholder="例如：孩子正在进行语言训练，这套卡片非常适合..."
+          value="{{applyMessage}}"
+          bindinput="onApplyInput"
+          maxlength="200"
+        ></textarea>
+        <text class="char-count">{{applyMessage.length}}/200</text>
+      </view>
+      
+      <view class="warning-box">
+        <text class="warning-icon">⚠️</text>
+        <text class="warning-text">请勿填写手机号、地址等敏感信息，保护双方隐私安全</text>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn btn-primary btn-block" bindtap="submitApply">
+        发送申请
+      </button>
+    </view>
+  </view>
+</view>
+
+<!-- 申请成功弹窗 -->
+<view class="modal-mask" wx:if="{{showSuccessModal}}" bindtap="hideSuccessModal">
+  <view class="success-modal" catchtap>
+    <text class="success-icon">🎉</text>
+    <text class="success-title">申请已发送</text>
+    <text class="success-desc">请耐心等待对方回复，同意后即可交换联系方式</text>
+    <button class="btn btn-primary btn-block mt-lg" bindtap="hideSuccessModal">
+      我知道了
+    </button>
+    <view class="goto-myrelay" bindtap="goToMyRelay">
+      查看我的接力申请 ›
+    </view>
+  </view>
+</view>
+

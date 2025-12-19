@@ -1,0 +1,357 @@
+/* pages/training-feedback/training-feedback.wxss */
+.feedback-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding: var(--spacing-lg);
+  box-sizing: border-box;
+}
+
+/* 训练统计卡片 */
+.stats-card {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-card::before {
+  content: '';
+  position: absolute;
+  top: -50rpx;
+  right: -50rpx;
+  width: 200rpx;
+  height: 200rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.stats-header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+  position: relative;
+}
+
+.stats-emoji {
+  font-size: 64rpx;
+  display: block;
+  margin-bottom: var(--spacing-sm);
+}
+
+.stats-title {
+  font-size: var(--font-xl);
+  font-weight: 600;
+}
+
+.stats-grid {
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  font-size: var(--font-xxl);
+  font-weight: 700;
+}
+
+.stat-value.highlight {
+  color: #7CFC00;
+  font-size: 56rpx;
+}
+
+.stat-label {
+  font-size: var(--font-xs);
+  opacity: 0.8;
+  margin-top: 4rpx;
+}
+
+/* 通用卡片 */
+.section-card {
+  background: var(--color-card);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.section-title {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-lg);
+  display: block;
+}
+
+/* 心情选择 */
+.mood-options {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.mood-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-sm);
+  border: 2rpx solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s ease;
+}
+
+.mood-option.selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.mood-emoji {
+  font-size: 48rpx;
+  margin-bottom: var(--spacing-sm);
+}
+
+.mood-text {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 4rpx;
+}
+
+.mood-desc {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+.mood-option.selected .mood-text {
+  color: var(--color-primary);
+}
+
+/* 评论输入 */
+.comment-input {
+  width: 100%;
+  min-height: 200rpx;
+  padding: var(--spacing-md);
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  font-size: var(--font-md);
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+.input-counter {
+  text-align: right;
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--spacing-sm);
+}
+
+/* 提交区域 */
+.submit-section {
+  padding-top: var(--spacing-lg);
+}
+
+.btn-large {
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: var(--font-lg);
+  font-weight: 600;
+}
+
+/* ===== 提交后样式 ===== */
+
+/* 成功头部 */
+.success-header {
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.success-icon {
+  width: 120rpx;
+  height: 120rpx;
+  background: var(--color-success);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+  color: white;
+  margin: 0 auto var(--spacing-md);
+  box-shadow: 0 8rpx 32rpx rgba(82, 196, 26, 0.3);
+}
+
+.success-title {
+  font-size: var(--font-xl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* AI加载中 */
+.ai-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-xl);
+}
+
+.ai-animation {
+  width: 120rpx;
+  height: 120rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.ai-emoji {
+  font-size: 64rpx;
+  animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20rpx); }
+}
+
+.loading-text {
+  font-size: var(--font-md);
+  color: var(--color-text-muted);
+}
+
+/* AI反馈 */
+.ai-feedback {
+  background: var(--color-card);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.feedback-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2rpx solid var(--color-border);
+}
+
+.feedback-icon {
+  font-size: var(--font-lg);
+  margin-right: var(--spacing-sm);
+}
+
+.feedback-label {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.feedback-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.feedback-summary {
+  font-size: var(--font-md);
+  color: var(--color-text-primary);
+  line-height: 1.7;
+}
+
+.section-subtitle {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+  display: block;
+}
+
+/* 建议列表 */
+.suggestion-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: flex-start;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.suggestion-icon {
+  margin-right: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+.suggestion-text {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* 鼓励语 */
+.encouragement-box {
+  display: flex;
+  align-items: flex-start;
+  background: linear-gradient(135deg, #FFF7E6 0%, #FFE7BA 100%);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.encouragement-icon {
+  font-size: var(--font-xl);
+  margin-right: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+.encouragement-text {
+  font-size: var(--font-md);
+  color: #D46B08;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* 下一步 */
+.next-steps {
+  background: var(--color-primary-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.next-label {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+  display: block;
+  margin-bottom: var(--spacing-xs);
+}
+
+.next-text {
+  font-size: var(--font-sm);
+  color: var(--color-primary-dark);
+  line-height: 1.5;
+}
+
+/* 操作按钮 */
+.action-section {
+  padding-top: var(--spacing-md);
+}
+
+.action-row {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.flex-1 {
+  flex: 1;
+}
+

@@ -1,0 +1,109 @@
+<!--pages/search/search.wxml-->
+<view class="search-page">
+  <!-- 搜索栏 -->
+  <view class="search-header">
+    <view class="search-bar-wrapper">
+      <image class="search-icon" src="/assets/icons/search.svg" mode="aspectFit"></image>
+      <input 
+        class="search-input"
+        placeholder="搜索机构/经验/问题"
+        value="{{keyword}}"
+        bindinput="onInput"
+        bindconfirm="doSearch"
+        focus="{{true}}"
+      />
+      <view class="clear-btn" wx:if="{{keyword}}" bindtap="clearKeyword">
+        <text>×</text>
+      </view>
+    </view>
+    <view class="cancel-btn" bindtap="goBack">
+      <text>取消</text>
+    </view>
+  </view>
+
+  <!-- 搜索历史 -->
+  <view class="history-section" wx:if="{{!keyword && searchHistory.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">搜索历史</text>
+      <view class="clear-history" bindtap="clearHistory">
+        <text>清空</text>
+      </view>
+    </view>
+    <view class="history-tags">
+      <view 
+        class="history-tag"
+        wx:for="{{searchHistory}}"
+        wx:key="*this"
+        bindtap="searchFromHistory"
+        data-keyword="{{item}}"
+      >
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 热门搜索 -->
+  <view class="hot-section" wx:if="{{!keyword}}">
+    <view class="section-header">
+      <text class="section-title">热门搜索</text>
+    </view>
+    <view class="hot-tags">
+      <view 
+        class="hot-tag"
+        wx:for="{{hotKeywords}}"
+        wx:key="*this"
+        bindtap="searchFromHistory"
+        data-keyword="{{item}}"
+      >
+        <text class="hot-index">{{index + 1}}</text>
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索结果 -->
+  <scroll-view class="result-scroll" scroll-y wx:if="{{keyword && hasSearched}}">
+    <!-- 结果标签 -->
+    <view class="result-tabs">
+      <view 
+        class="result-tab {{resultTab === item.id ? 'active' : ''}}"
+        wx:for="{{resultTabs}}"
+        wx:key="id"
+        bindtap="switchResultTab"
+        data-id="{{item.id}}"
+      >
+        {{item.name}}
+        <text class="tab-count">({{item.count}})</text>
+      </view>
+    </view>
+
+    <!-- 结果列表 -->
+    <view class="result-list">
+      <view 
+        class="result-item"
+        wx:for="{{searchResults}}"
+        wx:key="id"
+        bindtap="goToResult"
+        data-item="{{item}}"
+      >
+        <view class="result-type-icon {{item.type}}">
+          <text wx:if="{{item.type === 'post'}}">📝</text>
+          <text wx:elif="{{item.type === 'institution'}}">🏥</text>
+          <text wx:else>💬</text>
+        </view>
+        <view class="result-content">
+          <text class="result-title">{{item.title}}</text>
+          <text class="result-desc ellipsis">{{item.description}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 无结果 -->
+    <view class="empty-result" wx:if="{{searchResults.length === 0}}">
+      <text class="empty-icon">🔍</text>
+      <text class="empty-text">未找到相关内容</text>
+      <text class="empty-tip">换个关键词试试吧</text>
+    </view>
+  </scroll-view>
+</view>
+

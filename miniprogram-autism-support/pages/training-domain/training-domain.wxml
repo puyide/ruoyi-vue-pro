@@ -1,0 +1,52 @@
+<!--pages/training-domain/training-domain.wxml-->
+<view class="domain-page">
+  <!-- 页面头部 -->
+  <view class="page-header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <text class="header-title">选择训练领域</text>
+      <text class="header-desc">根据孩子的发展需求，选择适合的训练方向</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 领域列表 -->
+  <view class="domain-list" wx:else>
+    <view 
+      class="domain-card"
+      wx:for="{{domains}}"
+      wx:key="code"
+      data-code="{{item.code}}"
+      data-name="{{item.name}}"
+      bindtap="selectDomain"
+      style="--domain-color: {{item.color}}"
+    >
+      <view class="domain-left">
+        <view class="domain-icon-wrapper">
+          <text class="domain-icon">{{item.icon}}</text>
+        </view>
+      </view>
+      <view class="domain-content">
+        <text class="domain-name">{{item.name}}</text>
+        <text class="domain-desc">{{item.description}}</text>
+      </view>
+      <view class="domain-arrow">
+        <text>›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="page-footer">
+    <view class="footer-tip">
+      <text class="tip-icon">💡</text>
+      <text class="tip-text">建议根据专业评估结果，有针对性地选择训练领域</text>
+    </view>
+  </view>
+</view>
+

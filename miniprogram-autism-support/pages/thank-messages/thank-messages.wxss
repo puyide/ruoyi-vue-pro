@@ -1,0 +1,202 @@
+/* pages/thank-messages/thank-messages.wxss */
+.thank-messages-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+/* 导航栏 */
+.nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx var(--spacing-lg);
+  padding-top: calc(var(--status-bar-height, 44rpx) + 20rpx);
+  background: var(--color-card);
+  border-bottom: 2rpx solid var(--color-border);
+}
+
+.nav-back {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-icon {
+  font-size: 48rpx;
+  color: var(--color-text-primary);
+  font-weight: 300;
+}
+
+.nav-title {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.nav-placeholder {
+  width: 60rpx;
+}
+
+/* 加载状态 */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.loading-text {
+  font-size: var(--font-md);
+  color: var(--color-text-muted);
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx var(--spacing-xl);
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: var(--spacing-lg);
+}
+
+.empty-title {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-desc {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* 消息列表 */
+.message-list {
+  padding: var(--spacing-lg);
+}
+
+.message-item {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  background: var(--color-card);
+  border-radius: var(--radius-lg);
+  position: relative;
+}
+
+.message-item.unread {
+  background: linear-gradient(135deg, #FFF9F5 0%, #FFF5EF 100%);
+}
+
+.message-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--spacing-md);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.message-avatar image {
+  width: 100%;
+  height: 100%;
+}
+
+.message-avatar .avatar-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.message-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+}
+
+.message-sender {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.message-time {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+.message-body {
+  margin-bottom: var(--spacing-sm);
+}
+
+.message-text {
+  font-size: var(--font-md);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.message-item-info {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+}
+
+.item-icon {
+  font-size: 24rpx;
+  margin-right: var(--spacing-xs);
+}
+
+.item-title {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+}
+
+/* 未读标记 */
+.unread-dot {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  width: 16rpx;
+  height: 16rpx;
+  background: var(--color-primary);
+  border-radius: 50%;
+}
+
+/* 底部提示 */
+.bottom-hint {
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.hint-text {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+}
+

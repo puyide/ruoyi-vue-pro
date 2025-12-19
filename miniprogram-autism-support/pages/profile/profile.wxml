@@ -1,0 +1,208 @@
+<!--pages/profile/profile.wxml-->
+<view class="profile-page">
+  <!-- 未登录状态 -->
+  <view class="login-prompt" wx:if="{{!isLogin}}">
+    <view class="login-header-bg">
+      <view class="header-bg"></view>
+      <view class="login-content">
+        <view class="login-avatar">
+          <text class="avatar-icon">👤</text>
+        </view>
+        <text class="login-title">登录后查看更多内容</text>
+        <text class="login-desc">记录孩子的成长，获取专属训练方案</text>
+        <button class="btn btn-primary login-btn" bindtap="goToLogin">
+          立即登录
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 已登录状态 - 用户信息头部 -->
+  <view class="user-header" wx:if="{{isLogin}}">
+    <view class="user-bg"></view>
+    <view class="user-info">
+      <view class="avatar-large">
+        <image wx:if="{{userInfo.avatar}}" src="{{userInfo.avatar}}" mode="aspectFill"></image>
+        <text wx:else class="avatar-text">{{userInfo.nickname[0] || '星'}}</text>
+      </view>
+      <view class="user-meta">
+        <view class="user-name-row">
+          <text class="user-name">{{userInfo.nickname}}</text>
+        </view>
+        <text class="user-mobile" wx:if="{{userInfo.mobile}}">{{userInfo.mobile}}</text>
+        <text class="user-child-age" wx:if="{{childProfile.ageRange}}">孩子年龄：{{childProfile.ageRange}}</text>
+      </view>
+    </view>
+    <button class="edit-btn" bindtap="editProfile">
+      编辑档案
+    </button>
+  </view>
+
+  <!-- 温暖问候区域 -->
+  <view class="greeting-section" wx:if="{{isLogin}}">
+    <text class="greeting">{{honorSummary.greeting || '你好'}}</text>
+    <text class="sub-greeting">今天是你陪伴孩子的第 {{honorSummary.daysWithUs || 1}} 天</text>
+  </view>
+
+  <!-- 我的记忆（勋章展示）-->
+  <view class="memory-section" wx:if="{{isLogin && honorSummary.badges && honorSummary.badges.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">我的记忆</text>
+      <text class="section-more" bindtap="goToAllBadges">查看全部 ›</text>
+    </view>
+    <view class="badge-wall">
+      <view class="badge-item" wx:for="{{honorSummary.badges}}" wx:key="code" wx:if="{{index < 4}}">
+        <view class="badge-icon">{{item.icon}}</view>
+        <text class="badge-name">{{item.name}}</text>
+        <text class="badge-time">{{item.unlockTimeText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 传递过的温暖（接力记忆）-->
+  <view class="relay-memory-section" wx:if="{{isLogin && honorSummary.hasRelayMemory}}">
+    <view class="section-header">
+      <text class="section-title">传递过的温暖</text>
+      <text class="section-more" bindtap="goToRelayMemories">查看全部 ›</text>
+    </view>
+    <view class="relay-memory-list">
+      <view class="memory-item" wx:for="{{honorSummary.relayMemories}}" wx:key="id">
+        <view class="memory-icon">🎁</view>
+        <view class="memory-content">
+          <text class="memory-title">{{item.itemTitle}}</text>
+          <text class="memory-status">{{item.statusText}}</text>
+        </view>
+        <text class="memory-time">{{item.timeText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 感谢私信提示 -->
+  <view class="thank-hint" wx:if="{{isLogin && honorSummary.unreadThankCount > 0}}" bindtap="goToThankMessages">
+    <view class="thank-icon">💌</view>
+    <text class="thank-text">有 {{honorSummary.unreadThankCount}} 条感谢想对你说</text>
+    <text class="thank-arrow">›</text>
+  </view>
+
+  <!-- 已登录状态 - 数据统计 -->
+  <view class="stats-card card" wx:if="{{isLogin}}">
+    <view class="stat-item" bindtap="goToMyTraining">
+      <text class="stat-value">{{stats.trainingDays}}</text>
+      <text class="stat-label">训练天数</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item" bindtap="goToMyPosts">
+      <text class="stat-value">{{stats.posts}}</text>
+      <text class="stat-label">发布帖子</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item" bindtap="goToMyComments">
+      <text class="stat-value">{{stats.comments}}</text>
+      <text class="stat-label">我的评论</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item" bindtap="goToMyReviews">
+      <text class="stat-value">{{stats.reviews}}</text>
+      <text class="stat-label">机构评价</text>
+    </view>
+  </view>
+
+  <!-- 功能菜单 - 我的记录（登录后显示）-->
+  <view class="menu-section" wx:if="{{isLogin}}">
+    <view class="menu-title">我的记录</view>
+    <view class="menu-list card">
+      <view class="menu-item" bindtap="goToMyTraining">
+        <view class="menu-icon training">📊</view>
+        <text class="menu-text">我的训练记录</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goToMyPosts">
+        <view class="menu-icon post">📝</view>
+        <text class="menu-text">我的帖子</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goToMyComments">
+        <view class="menu-icon comment">💬</view>
+        <text class="menu-text">我的评论</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goToMyReviews">
+        <view class="menu-icon review">⭐</view>
+        <text class="menu-text">我的机构评价</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goToMyCollections">
+        <view class="menu-icon collection">❤️</view>
+        <text class="menu-text">我的收藏</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goToMyRelay">
+        <view class="menu-icon relay">🎁</view>
+        <text class="menu-text">我的接力</text>
+        <view class="menu-badge hot">NEW</view>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 工具箱（所有用户可见）-->
+  <view class="menu-section">
+    <view class="menu-title">工具箱</view>
+    <view class="tool-grid">
+      <view class="tool-item" bindtap="goToTimer">
+        <view class="tool-icon timer">⏱️</view>
+        <text class="tool-name">视觉计时器</text>
+      </view>
+      <view class="tool-item" bindtap="goToChecklist">
+        <view class="tool-icon checklist">✅</view>
+        <text class="tool-name">训练清单</text>
+      </view>
+      <view class="tool-item" bindtap="goToCalendar">
+        <view class="tool-icon calendar">📅</view>
+        <text class="tool-name">训练日历</text>
+      </view>
+      <view class="tool-item" bindtap="goToNotes">
+        <view class="tool-icon notes">📒</view>
+        <text class="tool-name">观察笔记</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 其他（所有用户可见）-->
+  <view class="menu-section">
+    <view class="menu-title">更多</view>
+    <view class="menu-list card">
+      <view class="menu-item" bindtap="joinWechatGroup">
+        <view class="menu-icon wechat">💚</view>
+        <text class="menu-text">加入同行微信群</text>
+        <view class="menu-badge">推荐</view>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goToFeedback">
+        <view class="menu-icon feedback">📮</view>
+        <text class="menu-text">意见反馈</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goToAbout">
+        <view class="menu-icon about">ℹ️</view>
+        <text class="menu-text">关于我们</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goToSettings">
+        <view class="menu-icon settings">⚙️</view>
+        <text class="menu-text">设置</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 退出登录按钮（登录后显示）-->
+  <view class="logout-section" wx:if="{{isLogin}}">
+    <button class="logout-btn" bindtap="handleLogout">
+      退出登录
+    </button>
+  </view>
+
+  <!-- 底部留白 -->
+  <view class="bottom-space safe-area-bottom"></view>
+</view>

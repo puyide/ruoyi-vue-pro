@@ -1,0 +1,112 @@
+### 训练模块 API 测试
+
+### ========== 训练模板 ==========
+
+### 获取训练域列表（含模板数量）
+GET {{appApi}}/member/training/template/domains
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+
+### 获取所有训练模板列表
+GET {{appApi}}/member/training/template/list
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+
+### 按训练域获取模板列表
+GET {{appApi}}/member/training/template/list?domain=social
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+
+### 获取单个模板详情
+GET {{appApi}}/member/training/template/get?id=1
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+
+### ========== 训练会话 ==========
+
+### 创建训练会话
+POST {{appApi}}/member/training/session/create
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+Content-Type: application/json
+
+{
+  "childId": 1,
+  "templateId": 1,
+  "difficultyLevel": 1,
+  "environment": {
+    "available_rooms": ["客厅", "卧室"],
+    "available_materials": ["玩具车", "积木"],
+    "time_limit_minutes": 10
+  }
+}
+
+### 获取今日训练列表
+GET {{appApi}}/member/training/session/today-list?childId=1
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+
+### 获取今日训练进度
+GET {{appApi}}/member/training/session/today-progress?childId=1
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+
+### 获取会话详情
+GET {{appApi}}/member/training/session/get?id=1
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+
+### 分页查询会话
+GET {{appApi}}/member/training/session/page?childId=1&pageNo=1&pageSize=10
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+
+### 开始训练会话
+PUT {{appApi}}/member/training/session/start?id=1
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+
+### 跳过训练会话
+PUT {{appApi}}/member/training/session/skip?id=1
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+
+### ========== 训练日志（打卡） ==========
+
+### 创建打卡记录
+POST {{appApi}}/member/training/log/create
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+Content-Type: application/json
+
+{
+  "sessionId": 1,
+  "completed": true,
+  "childMood": 1,
+  "successCount": 5,
+  "difficulties": ["环境太吵"],
+  "parentComment": "孩子今天状态不错",
+  "actualDurationMinutes": 8,
+  "sharedToCommunity": false
+}
+
+### 获取日志详情
+GET {{appApi}}/member/training/log/get?id=1
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+
+### 分页查询日志
+GET {{appApi}}/member/training/log/page?childId=1&pageNo=1&pageSize=10
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+
+### 获取 AI 训练反馈
+GET {{appApi}}/member/training/log/feedback?logId=1
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+
+### 获取训练统计信息
+GET {{appApi}}/member/training/log/statistics?childId=1
+Authorization: Bearer {{appToken}}
+tenant-id: {{appTenantId}}
+

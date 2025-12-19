@@ -1,0 +1,240 @@
+/* pages/group/group.wxss */
+.group-page {
+  padding: var(--spacing-lg);
+  padding-bottom: 0;
+}
+
+/* 页面标题 */
+.page-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.page-title {
+  font-size: var(--font-xxl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  display: block;
+  margin-bottom: var(--spacing-xs);
+}
+
+.page-subtitle {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+}
+
+/* 区块 */
+.section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--spacing-md);
+}
+
+.section-title {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  position: relative;
+  padding-left: 20rpx;
+}
+
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6rpx;
+  height: 28rpx;
+  background: var(--color-primary);
+  border-radius: 3rpx;
+}
+
+.section-desc {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+/* 小组列表 */
+.group-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.group-card {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--spacing-lg);
+  transition: transform 0.2s ease;
+}
+
+.group-card:active {
+  transform: scale(0.99);
+}
+
+/* 小组头像 */
+.group-avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  flex-shrink: 0;
+}
+
+.group-avatar.orange {
+  background: linear-gradient(135deg, #FFE4D9 0%, #FFD0BC 100%);
+}
+
+.group-avatar.purple {
+  background: linear-gradient(135deg, #E8E4FF 0%, #D0C9FF 100%);
+}
+
+.group-avatar.green {
+  background: linear-gradient(135deg, #E0F5EF 0%, #B8E8DB 100%);
+}
+
+.group-avatar.blue {
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+}
+
+.group-avatar.yellow {
+  background: linear-gradient(135deg, #FFF8E7 0%, #FFE9B3 100%);
+}
+
+/* 小组内容 */
+.group-card-content {
+  flex: 1;
+  margin-left: var(--spacing-md);
+  min-width: 0;
+}
+
+.group-name {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 8rpx;
+}
+
+.group-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  margin-bottom: 8rpx;
+}
+
+.group-tag {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  padding: 4rpx 12rpx;
+  border-radius: var(--radius-sm);
+}
+
+.group-meta {
+  margin-bottom: 8rpx;
+}
+
+.member-count {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.group-desc {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.group-activity {
+  display: flex;
+  align-items: center;
+}
+
+.activity-dot {
+  width: 12rpx;
+  height: 12rpx;
+  background: var(--color-success);
+  border-radius: 50%;
+  margin-right: 8rpx;
+}
+
+.activity-text {
+  font-size: var(--font-xs);
+  color: var(--color-success);
+}
+
+/* 小组操作 */
+.group-card-arrow {
+  display: flex;
+  align-items: center;
+  color: var(--color-primary);
+  font-size: var(--font-sm);
+  flex-shrink: 0;
+}
+
+.arrow-icon {
+  font-size: var(--font-lg);
+  margin-left: 4rpx;
+}
+
+.group-card-action {
+  flex-shrink: 0;
+  margin-left: var(--spacing-md);
+}
+
+.join-btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--color-primary);
+  color: white;
+  font-size: var(--font-sm);
+  border-radius: var(--radius-full);
+  border: none;
+  line-height: 1.5;
+}
+
+.join-btn::after {
+  border: none;
+}
+
+.join-btn.joined {
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+}
+
+/* 分类标签 */
+.category-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.category-tab {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-card);
+  border: 2rpx solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  transition: all 0.3s ease;
+}
+
+.category-tab.active {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* 底部留白 */
+.bottom-space {
+  height: 120rpx;
+}
+

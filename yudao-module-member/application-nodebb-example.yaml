@@ -1,0 +1,65 @@
+--- ### NodeBB 集成配置示例 ###
+# 请将以下配置添加到 yudao-server/src/main/resources/application-local.yaml 中
+
+yudao:
+  member:
+    nodebb:
+      # ========== 基础配置 ==========
+      # 是否启用 NodeBB 集成（默认：false）
+      enabled: true
+      
+      # NodeBB 服务地址（必填）
+      url: http://localhost:4567
+      
+      # ========== NodeBB API 配置 ==========
+      # NodeBB Write API Master Token（必填）
+      # 在 NodeBB 后台 Settings -> API Access 中生成
+      master-token: change-me-to-real-master-token
+      
+      # NodeBB 管理员 UID（必填，一般为 1）
+      # 用于代表管理员创建用户
+      admin-uid: 1
+      
+      # ========== SSO 配置 ==========
+      # SSO JWT 签名密钥（必填）
+      # 必须与 nodebb-plugin-session-sharing 配置的 secret 完全一致
+      # 建议使用 32 字符以上的强随机字符串
+      sso-secret: change-me-to-your-jwt-secret-at-least-32-chars
+      
+      # SSO Cookie 名称（必填）
+      # 必须与 nodebb-plugin-session-sharing 配置的 name 一致
+      # 默认: token
+      sso-cookie-name: token
+      
+      # SSO Cookie Domain（可选）
+      # 用于跨子域共享 Cookie，例如: .example.com
+      # 留空则使用当前域名
+      sso-cookie-domain: ""
+      
+      # SSO Cookie 有效期（秒）（可选）
+      # 默认: 604800 (7天)
+      sso-cookie-max-age-seconds: 604800
+      
+      # ========== 用户创建配置 ==========
+      # 创建 NodeBB 用户时的默认密码（必填）
+      # 至少 8 位字符，用户无法通过此密码直接登录 NodeBB（因为使用 SSO）
+      default-password: "DefaultPass123!"
+
+# ========== 生产环境配置建议 ==========
+# spring:
+#   profiles:
+#     active: prod
+# 
+# yudao:
+#   member:
+#     nodebb:
+#       enabled: true
+#       url: https://forum.your-domain.com  # 使用 HTTPS
+#       master-token: ${NODEBB_MASTER_TOKEN}  # 从环境变量读取
+#       admin-uid: 1
+#       sso-secret: ${NODEBB_SSO_SECRET}  # 从环境变量读取
+#       sso-cookie-name: token
+#       sso-cookie-domain: .your-domain.com  # 设置主域名
+#       sso-cookie-max-age-seconds: 2592000  # 30天
+#       default-password: ${NODEBB_DEFAULT_PASSWORD}  # 从环境变量读取
+

@@ -1,0 +1,38 @@
+# NodeBB 双方案 SSO 配置
+# 自动生成于配置脚本
+
+yudao:
+  member:
+    nodebb:
+      # ========== 基础配置 ==========
+      enabled: true
+      url: http://localhost:4567
+      
+      # ========== Session Sharing (方案A) ==========
+      # JWT Secret（与 NodeBB Session Sharing 插件配置一致）
+      sso-secret: "T6oRQn1lIBnUo1ZhlvT11JQf8DVUnGUdHxNHCX2xPVMowDpU/CXKupAm0cqfWAGx"
+      sso-cookie-name: token
+      sso-cookie-domain: ""
+      sso-cookie-max-age-seconds: 604800  # 7天
+      
+      # ========== NodeBB API ==========
+      # Master Token（需要在 NodeBB 后台生成）
+      # 访问: http://localhost:4567/admin/settings/api
+      # 点击 Generate Token → 选择 Master Token → 复制
+      master-token: "ea4aea3a-3c28-40fb-97fe-b635e5f0aaff"
+      admin-uid: 1
+      default-password: "DefaultPass123!"
+
+# ========== 使用说明 ==========
+# 1. 获取 Master Token：
+#    访问 http://localhost:4567/admin/settings/api
+#    点击 Generate Token → Master Token → 复制
+#    替换上方的 master-token 值
+#
+# 2. 在 application-local.yaml 中添加：
+#    spring:
+#      profiles:
+#        include: nodebb-auto
+#
+# 3. 重启 yudao 应用
+

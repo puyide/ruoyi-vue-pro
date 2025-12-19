@@ -1,0 +1,154 @@
+<!--pages/training-feedback/training-feedback.wxml-->
+<view class="feedback-page">
+  <!-- 提交前：填写反馈 -->
+  <block wx:if="{{!submitted}}">
+    <!-- 训练统计 -->
+    <view class="stats-card">
+      <view class="stats-header">
+        <text class="stats-emoji">🎉</text>
+        <text class="stats-title">训练完成！</text>
+      </view>
+      <view class="stats-grid">
+        <view class="stat-item">
+          <text class="stat-value">{{duration}}</text>
+          <text class="stat-label">分钟</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value highlight">{{successCount}}</text>
+          <text class="stat-label">成功次数</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{totalAttempts}}</text>
+          <text class="stat-label">总尝试</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 心情选择 -->
+    <view class="section-card">
+      <view class="section-title">孩子今天的状态如何？</view>
+      <view class="mood-options">
+        <view 
+          class="mood-option {{childMood === 1 ? 'selected' : ''}}"
+          data-mood="1"
+          bindtap="selectMood"
+        >
+          <text class="mood-emoji">😊</text>
+          <text class="mood-text">很开心</text>
+          <text class="mood-desc">配合度高</text>
+        </view>
+        <view 
+          class="mood-option {{childMood === 2 ? 'selected' : ''}}"
+          data-mood="2"
+          bindtap="selectMood"
+        >
+          <text class="mood-emoji">😐</text>
+          <text class="mood-text">一般</text>
+          <text class="mood-desc">偶有分心</text>
+        </view>
+        <view 
+          class="mood-option {{childMood === 3 ? 'selected' : ''}}"
+          data-mood="3"
+          bindtap="selectMood"
+        >
+          <text class="mood-emoji">😟</text>
+          <text class="mood-text">不太好</text>
+          <text class="mood-desc">有抵触情绪</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 备注输入 -->
+    <view class="section-card">
+      <view class="section-title">训练笔记（可选）</view>
+      <textarea 
+        class="comment-input"
+        placeholder="记录今天训练中的特殊情况、孩子的反应、您的观察..."
+        value="{{parentComment}}"
+        bindinput="onCommentInput"
+        maxlength="500"
+      ></textarea>
+      <view class="input-counter">{{parentComment.length}}/500</view>
+    </view>
+
+    <!-- 提交按钮 -->
+    <view class="submit-section safe-area-bottom">
+      <button 
+        class="btn btn-primary btn-block btn-large" 
+        bindtap="submitFeedback"
+        loading="{{submitting}}"
+        disabled="{{submitting}}"
+      >
+        提交反馈
+      </button>
+    </view>
+  </block>
+
+  <!-- 提交后：显示AI反馈 -->
+  <block wx:else>
+    <view class="success-header">
+      <view class="success-icon">✓</view>
+      <text class="success-title">反馈已提交</text>
+    </view>
+
+    <!-- AI反馈加载中 -->
+    <view class="ai-loading" wx:if="{{loadingFeedback}}">
+      <view class="ai-animation">
+        <text class="ai-emoji">🤖</text>
+      </view>
+      <text class="loading-text">AI正在分析您的训练数据...</text>
+    </view>
+
+    <!-- AI反馈内容 -->
+    <view class="ai-feedback" wx:elif="{{aiFeedback}}">
+      <view class="feedback-header">
+        <text class="feedback-icon">✨</text>
+        <text class="feedback-label">AI训练建议</text>
+      </view>
+
+      <!-- 总结 -->
+      <view class="feedback-section">
+        <text class="feedback-summary">{{aiFeedback.summary}}</text>
+      </view>
+
+      <!-- 建议 -->
+      <view class="feedback-section" wx:if="{{aiFeedback.suggestions && aiFeedback.suggestions.length > 0}}">
+        <text class="section-subtitle">改进建议</text>
+        <view class="suggestion-list">
+          <view class="suggestion-item" wx:for="{{aiFeedback.suggestions}}" wx:key="*this">
+            <text class="suggestion-icon">💡</text>
+            <text class="suggestion-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 鼓励语 -->
+      <view class="encouragement-box" wx:if="{{aiFeedback.encouragement}}">
+        <text class="encouragement-icon">💪</text>
+        <text class="encouragement-text">{{aiFeedback.encouragement}}</text>
+      </view>
+
+      <!-- 下一步 -->
+      <view class="next-steps" wx:if="{{aiFeedback.nextSteps}}">
+        <text class="next-label">📅 下一步</text>
+        <text class="next-text">{{aiFeedback.nextSteps}}</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-section safe-area-bottom">
+      <button class="btn btn-primary btn-block" bindtap="goHome">
+        返回训练首页
+      </button>
+      <view class="action-row">
+        <button class="btn btn-outline flex-1" bindtap="viewCommunity">
+          查看社区经验
+        </button>
+        <button class="btn btn-secondary flex-1" bindtap="trainAgain">
+          再训练一次
+        </button>
+      </view>
+    </view>
+  </block>
+</view>
+

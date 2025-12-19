@@ -1,0 +1,128 @@
+<!--pages/resource/resource.wxml-->
+<view class="resource-page">
+  <!-- 顶部筛选栏 -->
+  <view class="filter-bar">
+    <view class="city-selector" bindtap="showCityPicker">
+      <text class="city-name">{{currentCity}}</text>
+      <text class="city-arrow">▼</text>
+    </view>
+    <view class="filter-btn" bindtap="showFilter">
+      <image class="filter-icon" src="/assets/icons/filter.svg" mode="aspectFit"></image>
+      <text>筛选</text>
+    </view>
+  </view>
+
+  <!-- 标签筛选 -->
+  <scroll-view class="tag-filter" scroll-x enable-flex>
+    <view 
+      class="filter-tag {{currentTag === item.id ? 'active' : ''}}"
+      wx:for="{{filterTags}}"
+      wx:key="id"
+      bindtap="selectTag"
+      data-id="{{item.id}}"
+    >
+      {{item.name}}
+    </view>
+  </scroll-view>
+
+  <!-- 机构列表 -->
+  <scroll-view 
+    class="institution-scroll" 
+    scroll-y
+    bindscrolltolower="loadMore"
+    refresher-enabled
+    bindrefresherrefresh="onRefresh"
+    refresher-triggered="{{isRefreshing}}"
+  >
+    <view class="institution-list">
+      <view 
+        class="institution-card card"
+        wx:for="{{institutions}}"
+        wx:key="id"
+        bindtap="goToDetail"
+        data-id="{{item.id}}"
+      >
+        <!-- 机构图片 -->
+        <view class="institution-image-wrapper" wx:if="{{item.coverImage}}">
+          <image class="institution-image" src="{{item.coverImage}}" mode="aspectFill"></image>
+        </view>
+
+        <!-- 机构信息 -->
+        <view class="institution-info">
+          <view class="institution-header">
+            <text class="institution-name">{{item.name}}</text>
+            <view class="rating-badge" wx:if="{{item.rating}}">
+              <text class="rating-star">⭐</text>
+              <text class="rating-value">{{item.rating}}</text>
+            </view>
+          </view>
+
+          <view class="institution-tags">
+            <view class="inst-tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">
+              {{tag}}
+            </view>
+          </view>
+
+          <view class="institution-meta">
+            <view class="meta-row">
+              <text class="meta-icon">📍</text>
+              <text class="meta-text">{{item.district}} · 距你 {{item.distance}}</text>
+            </view>
+            <view class="meta-row" wx:if="{{item.reviewCount}}">
+              <text class="meta-icon">💬</text>
+              <text class="meta-text">{{item.reviewCount}}条点评</text>
+            </view>
+          </view>
+
+          <!-- 快速标签 -->
+          <view class="quick-tags" wx:if="{{item.highlights.length > 0}}">
+            <text class="highlight-tag" wx:for="{{item.highlights}}" wx:key="*this" wx:for-item="hl">{{hl}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="loading-more" wx:if="{{isLoading}}">
+      <view class="loading-spinner"></view>
+      <text>加载中...</text>
+    </view>
+
+    <!-- 没有更多 -->
+    <view class="no-more" wx:if="{{noMore && institutions.length > 0}}">
+      <text>— 没有更多了 —</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{institutions.length === 0 && !isLoading}}">
+      <text class="empty-icon">🔍</text>
+      <text class="empty-text">暂无符合条件的机构</text>
+      <text class="empty-tip">试试调整筛选条件</text>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-space safe-area-bottom"></view>
+  </scroll-view>
+</view>
+
+<!-- 城市选择器 -->
+<view class="picker-mask" wx:if="{{showCitySelector}}" bindtap="hideCityPicker">
+  <view class="picker-content" catchtap>
+    <view class="picker-header">
+      <text class="picker-title">选择城市</text>
+      <view class="picker-close" bindtap="hideCityPicker">✕</view>
+    </view>
+    <view class="city-list">
+      <view 
+        class="city-item {{currentCity === item ? 'active' : ''}}"
+        wx:for="{{cities}}"
+        wx:key="*this"
+        bindtap="selectCity"
+        data-city="{{item}}"
+      >
+        {{item}}
+      </view>
+    </view>
+  </view>
+</view>
+

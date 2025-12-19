@@ -1,0 +1,42 @@
+<!--pages/tip-detail/tip-detail.wxml-->
+<view class="tip-detail-page">
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">今日锦囊</text>
+    <view class="nav-share" bindtap="shareTip">
+      <text>分享</text>
+    </view>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+    <view class="tip-header">
+      <text class="tip-icon">🧠</text>
+      <text class="tip-date">{{tip.date}}</text>
+    </view>
+
+    <view class="tip-main card">
+      <text class="tip-title">{{tip.title}}</text>
+      <view class="tip-content">
+        <rich-text nodes="{{tip.content}}"></rich-text>
+      </view>
+    </view>
+
+    <view class="tip-source card">
+      <text class="source-label">来源</text>
+      <text class="source-text">@{{tip.author}}</text>
+    </view>
+
+    <view class="related-tips" wx:if="{{relatedTips.length > 0}}">
+      <text class="section-title">更多锦囊</text>
+      <view class="related-list">
+        <view class="related-item card" wx:for="{{relatedTips}}" wx:key="id" bindtap="goToTip" data-id="{{item.id}}">
+          <text class="related-title">{{item.title}}</text>
+          <text class="related-date">{{item.date}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+

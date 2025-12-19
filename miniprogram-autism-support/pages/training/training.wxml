@@ -1,0 +1,263 @@
+<!--pages/training/training.wxml-->
+<view class="training-page">
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <block wx:else>
+    <!-- 顶部儿童选择器 -->
+    <view class="child-selector" bindtap="showChildSelector">
+      <view class="child-avatar">
+        <text class="avatar-emoji">👶</text>
+      </view>
+      <view class="child-info">
+        <text class="child-name">{{currentChild.nickname || '我的宝贝'}}</text>
+        <text class="child-age" wx:if="{{currentChild.age}}">{{currentChild.age}}岁</text>
+      </view>
+      <view class="selector-arrow" wx:if="{{children.length > 1}}">
+        <text>▼</text>
+      </view>
+    </view>
+
+    <!-- 今日任务卡片 -->
+    <view class="today-task card card-elevated fade-in" wx:if="{{currentSession}}">
+      <view class="task-header">
+        <view class="task-badge">今日任务</view>
+        <view class="task-date">{{today}}</view>
+      </view>
+      
+      <view class="task-content">
+        <view class="task-icon-wrapper">
+          <text class="task-icon">{{currentSession.domainIcon || '🎯'}}</text>
+        </view>
+        <view class="task-info">
+          <text class="task-title">{{currentSession.templateName || currentSession.title}}</text>
+          <view class="task-tags">
+            <text class="task-tag domain">{{currentSession.domainName}}</text>
+            <text class="task-tag level" wx:if="{{currentSession.difficultyLevel}}">L{{currentSession.difficultyLevel}}</text>
+          </view>
+          <text class="task-duration">预计时长：{{currentSession.duration || '5-10分钟'}}</text>
+        </view>
+      </view>
+
+      <view class="task-steps" wx:if="{{currentSession.briefSteps && currentSession.briefSteps.length > 0}}">
+        <view class="step-item" wx:for="{{currentSession.briefSteps}}" wx:for-item="step" wx:key="index">
+          <view class="step-number">{{index + 1}}</view>
+          <text class="step-text ellipsis">{{step}}</text>
+        </view>
+      </view>
+
+      <view class="task-action">
+        <button class="btn btn-primary btn-block" bindtap="startTraining">
+          <text class="btn-icon">▶</text> 开始训练
+        </button>
+      </view>
+    </view>
+
+    <!-- 无任务时的提示 -->
+    <view class="empty-task card card-elevated" wx:else>
+      <view class="empty-icon">📋</view>
+      <text class="empty-title">今日还没有训练任务</text>
+      <text class="empty-desc">选择一个训练领域，开始今天的训练吧！</text>
+      <button class="btn btn-primary" bindtap="addNewTask">
+        <text>+ 添加训练任务</text>
+      </button>
+    </view>
+
+    <!-- 本周进度 -->
+    <view class="progress-card card">
+      <view class="progress-header">
+        <text class="progress-title">本周进度</text>
+        <text class="progress-percent">{{weekProgress}}%</text>
+      </view>
+      
+      <view class="progress-bar-wrapper">
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{weekProgress}}%"></view>
+        </view>
+      </view>
+
+      <view class="progress-stats">
+        <view class="stat-item">
+          <text class="stat-value">{{completedDays}}</text>
+          <text class="stat-label">完成天数</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-value">{{totalMinutes}}</text>
+          <text class="stat-label">训练分钟</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-value">{{streak}}</text>
+          <text class="stat-label">连续天数</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 历史打卡 -->
+    <view class="history-card card">
+      <view class="history-header">
+        <text class="history-title">最近7天打卡</text>
+      </view>
+      
+      <view class="calendar-row">
+        <view 
+          class="calendar-day {{item.status}} {{item.isToday ? 'today' : ''}}"
+          wx:for="{{weekDays}}"
+          wx:key="date"
+        >
+          <text class="day-name">{{item.name}}</text>
+          <view class="day-status">
+            <text wx:if="{{item.status === 'completed'}}">✓</text>
+            <text wx:elif="{{item.status === 'missed'}}">✗</text>
+            <text wx:else>-</text>
+          </view>
+          <text class="day-date">{{item.date}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 训练领域入口 -->
+    <view class="domains-section">
+      <view class="section-header">
+        <text class="section-title">训练领域</text>
+        <view class="section-more" bindtap="viewAllDomains">
+          <text>全部</text>
+          <text class="more-arrow">›</text>
+        </view>
+      </view>
+
+      <view class="domains-grid">
+        <view 
+          class="domain-card"
+          wx:for="{{domains}}"
+          wx:key="code"
+          data-code="{{item.code}}"
+          data-name="{{item.name}}"
+          bindtap="viewDomain"
+          style="--domain-color: {{item.color}}"
+        >
+          <view class="domain-icon">
+            <text>{{item.icon}}</text>
+          </view>
+          <text class="domain-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 推荐任务列表 -->
+    <view class="recommend-section">
+      <view class="section-header">
+        <text class="section-title">推荐任务</text>
+      </view>
+
+      <view class="task-list">
+        <view 
+          class="task-card card"
+          wx:for="{{recommendTemplates}}"
+          wx:key="id"
+          bindtap="viewTaskDetail"
+          data-id="{{item.id}}"
+          data-type="template"
+        >
+          <view class="task-card-left">
+            <view class="task-card-icon domain-{{item.domain}}">
+              <text>{{item.icon || '📝'}}</text>
+            </view>
+          </view>
+          <view class="task-card-content">
+            <text class="task-card-title">{{item.name}}</text>
+            <view class="task-meta">
+              <text class="task-category">{{item.domainName}}</text>
+              <text class="task-age" wx:if="{{item.ageRange}}">{{item.ageRange}}</text>
+            </view>
+          </view>
+          <view class="task-card-arrow">
+            <text>›</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-space safe-area-bottom"></view>
+  </block>
+</view>
+
+<!-- 儿童选择弹窗 -->
+<view class="modal-mask" wx:if="{{showChildPicker}}" bindtap="closeChildPicker">
+  <view class="child-picker-modal" catchtap>
+    <view class="picker-header">
+      <text class="picker-title">选择宝贝</text>
+      <view class="picker-close" bindtap="closeChildPicker">✕</view>
+    </view>
+    <view class="picker-list">
+      <view 
+        class="picker-item {{currentChild.id === item.id ? 'selected' : ''}}"
+        wx:for="{{children}}"
+        wx:key="id"
+        data-index="{{index}}"
+        bindtap="selectChild"
+      >
+        <view class="picker-avatar">👶</view>
+        <view class="picker-info">
+          <text class="picker-name">{{item.nickname}}</text>
+          <text class="picker-age" wx:if="{{item.age}}">{{item.age}}岁</text>
+        </view>
+        <view class="picker-check" wx:if="{{currentChild.id === item.id}}">✓</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 打卡完成弹窗 -->
+<view class="modal-mask" wx:if="{{showFeedbackModal}}" bindtap="closeFeedbackModal">
+  <view class="feedback-modal" catchtap>
+    <view class="modal-header">
+      <text class="modal-emoji">🎉</text>
+      <text class="modal-title">完成今天的训练啦！</text>
+    </view>
+    
+    <view class="modal-body">
+      <text class="feedback-question">孩子的表现如何？</text>
+      <view class="feedback-options">
+        <view 
+          class="feedback-option {{feedback === 'good' ? 'selected' : ''}}"
+          bindtap="selectFeedback"
+          data-value="good"
+        >
+          <text class="option-emoji">😊</text>
+          <text class="option-text">很顺利</text>
+        </view>
+        <view 
+          class="feedback-option {{feedback === 'normal' ? 'selected' : ''}}"
+          bindtap="selectFeedback"
+          data-value="normal"
+        >
+          <text class="option-emoji">😐</text>
+          <text class="option-text">一般</text>
+        </view>
+        <view 
+          class="feedback-option {{feedback === 'hard' ? 'selected' : ''}}"
+          bindtap="selectFeedback"
+          data-value="hard"
+        >
+          <text class="option-emoji">😣</text>
+          <text class="option-text">有难度</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn btn-primary btn-block" bindtap="submitFeedback">
+        提交反馈
+      </button>
+      <button class="btn btn-secondary btn-block mt-md" bindtap="viewRelatedPosts">
+        查看社区的相似训练经验
+      </button>
+    </view>
+  </view>
+</view>

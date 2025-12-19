@@ -1,0 +1,210 @@
+<!--pages/group-detail/group-detail.wxml-->
+<view class="group-detail-page">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <view class="nav-center">
+      <text class="nav-title">{{group.name}}</text>
+      <text class="nav-member">{{group.memberCount}}人</text>
+    </view>
+    <view class="nav-more" bindtap="showGroupMenu">
+      <text class="more-icon">···</text>
+    </view>
+  </view>
+
+  <!-- 交流空间入口卡片 -->
+  <view class="chat-entry-card card" wx:if="{{group.joined && (group.wechatQrUrl || group.wecomUrl)}}">
+    <view class="chat-entry-icon">💬</view>
+    <view class="chat-entry-content">
+      <text class="chat-entry-title">进入交流空间</text>
+      <text class="chat-entry-desc">和同行家长进行文字交流</text>
+    </view>
+    <button class="chat-entry-btn" bindtap="showChatConfirm">进入交流区</button>
+  </view>
+
+  <!-- 已退出交流区提示（情绪兜底） -->
+  <view class="left-chat-tip card" wx:if="{{group.joined && showLeftChatTip}}">
+    <view class="left-chat-icon">🌿</view>
+    <view class="left-chat-content">
+      <text class="left-chat-title">已退出交流区</text>
+      <text class="left-chat-desc">每个人的节奏不同，退出并不代表失败。小组内容仍可继续在平台内查看。</text>
+    </view>
+    <view class="left-chat-close" bindtap="closeLeftChatTip">×</view>
+  </view>
+
+  <!-- 风控轻提示 -->
+  <view class="risk-tip" wx:if="{{group.joined && (group.wechatQrUrl || group.wecomUrl)}}">
+    <text>交流区为微信环境，请遵守平台及群内规则</text>
+  </view>
+
+  <!-- 引导话题卡片 -->
+  <view class="topic-card card" wx:if="{{todayTopic}}">
+    <view class="topic-header">
+      <text class="topic-badge">今日话题</text>
+    </view>
+    <text class="topic-question">{{todayTopic.question}}</text>
+    <view class="topic-examples">
+      <text class="example-label">参考回答：</text>
+      <text class="example-text" wx:for="{{todayTopic.examples}}" wx:key="*this">• {{item}}</text>
+    </view>
+    <button class="btn btn-secondary btn-sm" bindtap="joinTopic">参与讨论</button>
+  </view>
+
+  <!-- 话题流 -->
+  <scroll-view 
+    class="message-scroll" 
+    scroll-y
+    scroll-into-view="{{scrollToView}}"
+    bindscrolltoupper="loadMoreMessages"
+  >
+    <!-- 加载更多提示 -->
+    <view class="load-more-tip" wx:if="{{hasMore}}">
+      <text>上拉加载更多</text>
+    </view>
+
+    <!-- 消息列表 -->
+    <view class="message-list">
+      <view 
+        class="message-item {{item.isMine ? 'mine' : ''}}"
+        wx:for="{{messages}}"
+        wx:key="id"
+        id="msg-{{item.id}}"
+      >
+        <view class="message-avatar avatar avatar-sm" wx:if="{{!item.isMine}}">
+          <text class="avatar-text">{{item.author.nickname[0]}}</text>
+        </view>
+        
+        <view class="message-content">
+          <view class="message-header" wx:if="{{!item.isMine}}">
+            <text class="message-author">{{item.author.nickname}}</text>
+            <text class="message-time">{{item.timeAgo}}</text>
+          </view>
+          
+          <view class="message-bubble">
+            <text class="message-text">{{item.content}}</text>
+          </view>
+
+          <!-- 图片消息 -->
+          <view class="message-images" wx:if="{{item.images && item.images.length > 0}}">
+            <image 
+              wx:for="{{item.images}}" 
+              wx:key="*this"
+              wx:for-item="img"
+              src="{{img}}"
+              mode="aspectFill"
+              class="message-image"
+              bindtap="previewImage"
+              data-url="{{img}}"
+              data-urls="{{item.images}}"
+            ></image>
+          </view>
+
+          <!-- 互动按钮 -->
+          <view class="message-actions">
+            <view class="action-item" catchtap="likeMessage" data-id="{{item.id}}">
+              <text class="action-icon">👍</text>
+              <text class="action-count" wx:if="{{item.likeCount}}">{{item.likeCount}}</text>
+            </view>
+            <view class="action-item" catchtap="replyMessage" data-id="{{item.id}}">
+              <text>我也遇到过</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-space"></view>
+  </scroll-view>
+
+  <!-- 底部输入栏 -->
+  <view class="input-bar safe-area-bottom">
+    <view class="input-wrapper">
+      <input 
+        class="message-input"
+        placeholder="分享你的想法..."
+        value="{{inputText}}"
+        bindinput="onInput"
+        bindconfirm="sendMessage"
+        confirm-type="send"
+      />
+    </view>
+    <view class="input-actions">
+      <view class="action-btn" bindtap="chooseImage">
+        <text class="btn-icon">📷</text>
+      </view>
+      <view class="send-btn {{inputText ? 'active' : ''}}" bindtap="sendMessage">
+        <text>发送</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 交流区说明确认弹窗 -->
+  <view class="confirm-modal" wx:if="{{showChatConfirmModal}}" bindtap="closeChatConfirm">
+    <view class="confirm-modal-content" catchtap="">
+      <view class="confirm-modal-header">
+        <text class="confirm-modal-title">小组交流说明</text>
+      </view>
+      
+      <view class="confirm-modal-body">
+        <text class="confirm-modal-intro">你即将进入一个由本小组成员组成的微信交流区，用于日常沟通与经验分享。</text>
+        
+        <view class="confirm-modal-notice">
+          <text class="notice-title">请注意：</text>
+          <text class="notice-item">• 群内成员均为自愿参与的家长</text>
+          <text class="notice-item">• 交流内容不构成医疗或专业建议</text>
+          <text class="notice-item">• 请勿发布广告、隐私或敏感信息</text>
+        </view>
+
+        <text class="confirm-modal-footer-text">如感到不适，可随时退出。</text>
+      </view>
+
+      <view class="confirm-modal-footer">
+        <button class="confirm-btn-secondary" bindtap="closeChatConfirm">取消</button>
+        <button class="confirm-btn-primary" bindtap="confirmEnterChat">进入交流区</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 微信群二维码弹窗 -->
+  <view class="qr-modal" wx:if="{{showQrModal}}" bindtap="closeQrModal">
+    <view class="qr-modal-content" catchtap="">
+      <view class="qr-modal-header">
+        <text class="qr-modal-title">加入交流区</text>
+        <view class="qr-modal-close" bindtap="closeQrModal">×</view>
+      </view>
+      
+      <view class="qr-modal-body">
+        <image 
+          class="qr-code-image" 
+          src="{{group.wechatQrUrl}}" 
+          mode="aspectFit"
+          bindtap="previewQrCode"
+          show-menu-by-longpress="{{true}}"
+        ></image>
+        
+        <view class="qr-tips">
+          <text class="qr-tip">长按二维码保存到相册</text>
+          <text class="qr-tip">打开微信扫一扫即可进入</text>
+        </view>
+
+        <!-- 群内欢迎语预览 -->
+        <view class="welcome-preview">
+          <text class="welcome-title">🌱 进入后会看到</text>
+          <text class="welcome-text">这里用于家长之间的日常交流与经验分享。请相互尊重，如有不适合的内容，管理员会协助处理。</text>
+        </view>
+
+        <!-- 二维码过期提示 -->
+        <view class="qr-expire-tip" wx:if="{{group.wechatQrExpire}}">
+          <text>二维码有效期至：{{group.wechatQrExpire}}</text>
+        </view>
+      </view>
+
+      <view class="qr-modal-footer">
+        <button class="btn btn-primary btn-block" bindtap="saveQrCode">保存到相册</button>
+      </view>
+    </view>
+  </view>
+</view>

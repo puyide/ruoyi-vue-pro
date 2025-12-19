@@ -1,0 +1,55 @@
+===============================================
+  ⚠️ 重要：请执行这4个文件（带_standalone）
+===============================================
+
+您刚才执行错了文件！
+应该执行带 "_standalone" 后缀的独立版本！
+
+在DataGrip中依次执行：
+
+✅ 1. mall_base_ddl.sql
+      (商城表结构，38KB)
+      
+✅ 2. mall_base_dml.sql
+      (商城数据，813KB)
+      
+✅ 3. equipment_renovation_standalone.sql  ⭐⭐⭐
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      注意：是 standalone 版本！
+      不是 equipment_renovation.sql
+      
+✅ 4. equipment_handover_standalone.sql  ⭐⭐⭐
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      注意：是 standalone 版本！
+      不是 equipment_handover.sql
+
+===============================================
+
+文件对比：
+
+❌ equipment_renovation.sql
+   → 需要system_dict_type表
+   → 会报错
+
+✅ equipment_renovation_standalone.sql
+   → 不需要system表
+   → 可以直接执行
+
+❌ equipment_handover.sql  
+   → 需要system_dict_type表
+   → 会报错
+
+✅ equipment_handover_standalone.sql
+   → 不需要system表
+   → 可以直接执行
+
+===============================================
+
+完成后验证：
+\dt
+SELECT COUNT(*) FROM product_brand;
+SELECT COUNT(*) FROM member_credit_score;
+SELECT COUNT(*) FROM equipment_handover;
+
+===============================================
+

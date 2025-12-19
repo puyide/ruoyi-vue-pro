@@ -1,0 +1,158 @@
+<!--pages/training-detail/training-detail.wxml-->
+<view class="training-detail-page">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">训练详情</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- AI生成中状态 -->
+  <view class="generating-container" wx:elif="{{generating}}">
+    <view class="ai-animation">
+      <text class="ai-emoji">🤖</text>
+      <view class="ai-pulse"></view>
+    </view>
+    <text class="generating-title">AI正在为您生成专属训练内容</text>
+    <text class="generating-desc">根据孩子的情况，定制个性化训练方案...</text>
+    <view class="generating-dots">
+      <view class="dot"></view>
+      <view class="dot"></view>
+      <view class="dot"></view>
+    </view>
+  </view>
+
+  <!-- 训练内容 -->
+  <scroll-view class="content-scroll" scroll-y wx:else>
+    <!-- 任务信息头 -->
+    <view class="task-header-card">
+      <view class="task-icon-large">
+        <text>{{trainingContent.icon || '🎯'}}</text>
+      </view>
+      <text class="task-title">{{trainingContent.title || session.templateName}}</text>
+      
+      <!-- 难度等级选择器 -->
+      <view class="level-selector">
+        <view 
+          class="level-btn {{difficultyLevel === 1 ? 'active' : ''}}"
+          data-level="1"
+          bindtap="adjustLevel"
+        >L1 初级</view>
+        <view 
+          class="level-btn {{difficultyLevel === 2 ? 'active' : ''}}"
+          data-level="2"
+          bindtap="adjustLevel"
+        >L2 中级</view>
+        <view 
+          class="level-btn {{difficultyLevel === 3 ? 'active' : ''}}"
+          data-level="3"
+          bindtap="adjustLevel"
+        >L3 高级</view>
+      </view>
+
+      <view class="task-meta">
+        <view class="meta-item">
+          <text class="meta-icon">⏱️</text>
+          <text>预计时长：{{trainingContent.duration || '5-10分钟'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 训练目标 -->
+    <view class="section-card" wx:if="{{trainingContent.goal}}">
+      <view class="section-title">
+        <text class="title-icon">🎯</text>
+        <text>训练目标</text>
+      </view>
+      <text class="goal-text">{{trainingContent.goal}}</text>
+      
+      <view class="success-criteria" wx:if="{{trainingContent.successCriteria}}">
+        <text class="criteria-label">成功标准：</text>
+        <text class="criteria-text">{{trainingContent.successCriteria}}</text>
+      </view>
+    </view>
+
+    <!-- 准备材料 -->
+    <view class="section-card" wx:if="{{trainingContent.materials && trainingContent.materials.length > 0}}">
+      <view class="section-title">
+        <text class="title-icon">📦</text>
+        <text>准备材料</text>
+      </view>
+      <view class="materials-list">
+        <view class="material-item" wx:for="{{trainingContent.materials}}" wx:key="*this">
+          <text class="material-dot">•</text>
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 图文步骤 -->
+    <view class="steps-section">
+      <view class="section-title">
+        <text class="title-icon">📝</text>
+        <text>训练步骤</text>
+      </view>
+
+      <view class="step-list">
+        <view class="step-card" wx:for="{{trainingContent.steps}}" wx:key="index">
+          <view class="step-header">
+            <view class="step-number-badge">步骤 {{index + 1}}</view>
+          </view>
+          <text class="step-title">{{item.title}}</text>
+          <text class="step-desc">{{item.description}}</text>
+          <image 
+            wx:if="{{item.image}}"
+            class="step-image" 
+            src="{{item.image}}" 
+            mode="aspectFill"
+          ></image>
+          <view class="step-tips" wx:if="{{item.tips}}">
+            <text class="tips-icon">💡</text>
+            <text class="tips-text">{{item.tips}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 注意事项 -->
+    <view class="notes-section" wx:if="{{trainingContent.notes && trainingContent.notes.length > 0}}">
+      <view class="section-title">
+        <text class="title-icon">⚠️</text>
+        <text>注意事项</text>
+      </view>
+      <view class="notes-list">
+        <view class="note-item" wx:for="{{trainingContent.notes}}" wx:key="*this">
+          <text class="note-dot">•</text>
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- AI生成提示 -->
+    <view class="ai-badge">
+      <text class="ai-icon">✨</text>
+      <text class="ai-text">此内容由AI根据孩子情况个性化生成</text>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-space"></view>
+  </scroll-view>
+
+  <!-- 底部操作栏 -->
+  <view class="action-bar safe-area-bottom" wx:if="{{!loading && !generating}}">
+    <button class="btn btn-outline flex-1" bindtap="changeTask">
+      换一个任务
+    </button>
+    <button class="btn btn-primary flex-1" bindtap="startTraining">
+      开始训练
+    </button>
+  </view>
+</view>

@@ -1,0 +1,140 @@
+<!--pages/login/login.wxml-->
+<view class="login-page">
+  <!-- 顶部装饰 -->
+  <view class="login-header">
+    <view class="header-bg"></view>
+    <view class="logo-container">
+      <view class="logo">
+        <text class="logo-icon">🌟</text>
+      </view>
+      <text class="app-name">星语家园</text>
+      <text class="app-slogan">陪伴星星孩子，温暖每一步成长</text>
+    </view>
+  </view>
+
+  <!-- 登录表单区域 -->
+  <view class="login-content">
+    <!-- 登录方式切换 -->
+    <view class="login-tabs">
+      <view class="tab {{loginType === 'wechat' ? 'active' : ''}}" bindtap="switchLoginType" data-type="wechat">
+        <text>微信登录</text>
+      </view>
+      <view class="tab {{loginType === 'phone' ? 'active' : ''}}" bindtap="switchLoginType" data-type="phone">
+        <text>手机号登录</text>
+      </view>
+    </view>
+
+    <!-- 微信授权登录 -->
+    <view class="login-form" wx:if="{{loginType === 'wechat'}}">
+      <view class="wechat-login-area">
+        <view class="wechat-icon">
+          <text class="icon">💚</text>
+        </view>
+        <text class="wechat-tip">使用微信手机号快速登录</text>
+        <text class="wechat-desc">获取微信绑定的手机号，自动创建账号</text>
+        
+        <!-- 微信手机号授权按钮 -->
+        <button 
+          class="btn btn-wechat btn-block"
+          open-type="getPhoneNumber"
+          bindgetphonenumber="onGetPhoneNumber"
+          loading="{{loading}}"
+          disabled="{{loading}}"
+        >
+          <text wx:if="{{!loading}}">📱 微信手机号一键登录</text>
+          <text wx:else>登录中...</text>
+        </button>
+      </view>
+    </view>
+
+    <!-- 手机验证码登录 -->
+    <view class="login-form" wx:if="{{loginType === 'phone'}}">
+      <!-- 手机号输入 -->
+      <view class="input-group">
+        <view class="input-label">手机号</view>
+        <view class="input-wrapper">
+          <text class="input-prefix">+86</text>
+          <input 
+            class="input phone-input" 
+            type="number" 
+            maxlength="11"
+            placeholder="请输入手机号" 
+            value="{{mobile}}"
+            bindinput="onMobileInput"
+          />
+          <view class="clear-btn" wx:if="{{mobile}}" bindtap="clearMobile">
+            <text>✕</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 验证码输入 -->
+      <view class="input-group">
+        <view class="input-label">验证码</view>
+        <view class="input-wrapper">
+          <input 
+            class="input code-input" 
+            type="number" 
+            maxlength="6"
+            placeholder="请输入验证码" 
+            value="{{smsCode}}"
+            bindinput="onCodeInput"
+          />
+          <button 
+            class="sms-btn {{canSendSms ? '' : 'disabled'}}" 
+            bindtap="sendSmsCode"
+            disabled="{{!canSendSms || sendingCode}}"
+          >
+            {{countdown > 0 ? countdown + 's' : '获取验证码'}}
+          </button>
+        </view>
+      </view>
+
+      <!-- 登录按钮 -->
+      <button 
+        class="btn btn-primary btn-block login-btn" 
+        bindtap="handleSmsLogin"
+        loading="{{loading}}"
+        disabled="{{loading || !canLogin}}"
+      >
+        登录
+      </button>
+    </view>
+
+    <!-- 协议勾选 -->
+    <view class="agreement-area">
+      <view class="checkbox-wrapper" bindtap="toggleAgreement">
+        <view class="checkbox {{agreed ? 'checked' : ''}}">
+          <text wx:if="{{agreed}}">✓</text>
+        </view>
+      </view>
+      <text class="agreement-text">
+        我已阅读并同意
+        <text class="link" bindtap="viewUserAgreement">《用户协议》</text>
+        和
+        <text class="link" bindtap="viewPrivacyPolicy">《隐私政策》</text>
+      </text>
+    </view>
+  </view>
+
+  <!-- 其他登录方式 -->
+  <view class="other-login">
+    <view class="divider-with-text">
+      <view class="divider-line"></view>
+      <text class="divider-text">其他登录方式</text>
+      <view class="divider-line"></view>
+    </view>
+    <view class="other-login-btns">
+      <view class="other-btn" bindtap="switchLoginType" data-type="{{loginType === 'wechat' ? 'phone' : 'wechat'}}">
+        <text class="other-icon">{{loginType === 'wechat' ? '📱' : '💬'}}</text>
+        <text class="other-text">{{loginType === 'wechat' ? '手机号登录' : '微信登录'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="login-footer safe-area-bottom">
+    <text class="footer-text">登录即表示您同意我们的服务条款</text>
+  </view>
+</view>
+

@@ -1,0 +1,133 @@
+<!--pages/post-create/post-create.wxml-->
+<view class="post-create-page">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <text class="back-icon">←</text>
+      <text>返回</text>
+    </view>
+    <view class="nav-right">
+      <view class="publish-btn {{canPublish ? 'active' : ''}}" bindtap="publish">
+        <text>发布</text>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view class="form-scroll" scroll-y>
+    <!-- 标题输入 -->
+    <view class="form-section">
+      <input 
+        class="title-input"
+        placeholder="输入标题（必填）"
+        placeholder-class="placeholder"
+        value="{{title}}"
+        bindinput="onTitleInput"
+        maxlength="50"
+      />
+      <text class="char-count">{{title.length}}/50</text>
+    </view>
+
+    <!-- 正文输入 -->
+    <view class="form-section">
+      <textarea 
+        class="content-textarea"
+        placeholder="分享你的经验和心得...&#10;&#10;好的经验帖应该包含：&#10;• 遇到的具体问题&#10;• 尝试的解决方法&#10;• 实际效果和心得"
+        placeholder-class="placeholder"
+        value="{{content}}"
+        bindinput="onContentInput"
+        maxlength="5000"
+        auto-height
+      />
+      <text class="char-count">{{content.length}}/5000</text>
+    </view>
+
+    <!-- 分类选择 -->
+    <view class="form-section" wx:if="{{categories.length > 0}}">
+      <view class="section-label">选择分类（必选）</view>
+      <picker 
+        mode="selector" 
+        range="{{categories}}" 
+        range-key="name"
+        value="{{categoryIndex}}"
+        bindchange="onCategoryChange"
+      >
+        <view class="picker-view">
+          <text class="picker-text">{{categories[categoryIndex].name || '请选择分类'}}</text>
+          <text class="picker-arrow">▸</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 图片上传 -->
+    <view class="form-section">
+      <view class="section-label">添加图片（选填，最多6张）</view>
+      <view class="image-upload-area">
+        <view 
+          class="uploaded-image"
+          wx:for="{{images}}"
+          wx:key="index"
+        >
+          <image src="{{item.tempFilePath}}" mode="aspectFill"></image>
+          <view class="uploading-mask" wx:if="{{item.uploading}}">
+            <view class="uploading-spinner"></view>
+          </view>
+          <view class="upload-success" wx:if="{{item.url && !item.uploading}}">✓</view>
+          <view class="remove-btn" catchtap="removeImage" data-index="{{index}}">
+            <text>×</text>
+          </view>
+        </view>
+        <view 
+          class="upload-btn"
+          wx:if="{{images.length < 6}}"
+          bindtap="chooseImage"
+        >
+          <text class="upload-icon">+</text>
+          <text class="upload-text">添加图片</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 标签选择 -->
+    <view class="form-section">
+      <view class="section-label">选择标签（必选，可多选）</view>
+      <view class="tag-grid">
+        <view 
+          class="tag-item {{selectedTags.includes(item) ? 'selected' : ''}}"
+          wx:for="{{tagOptions}}"
+          wx:key="*this"
+          bindtap="toggleTag"
+          data-tag="{{item}}"
+        >
+          <text>{{item}}</text>
+          <view class="tag-check" wx:if="{{selectedTags.includes(item)}}">✓</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 匿名发布 -->
+    <view class="form-section">
+      <view class="anonymous-row">
+        <view class="anonymous-left">
+          <text class="anonymous-label">匿名发布</text>
+          <text class="anonymous-desc">开启后，其他用户将看不到你的昵称</text>
+        </view>
+        <switch 
+          class="anonymous-switch"
+          checked="{{isAnonymous}}"
+          bindchange="toggleAnonymous"
+          color="#FF7A45"
+        />
+      </view>
+    </view>
+
+    <!-- 提示信息 -->
+    <view class="tip-box">
+      <text class="tip-icon">💡</text>
+      <text class="tip-text">发布后将进入审核机制，审核通过后会自动生成 AI 摘要帮助其他家长快速了解内容。</text>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-space safe-area-bottom"></view>
+  </scroll-view>
+</view>
+

@@ -1,0 +1,250 @@
+<!--pages/my-relay/my-relay.wxml-->
+<view class="my-relay-page">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">我的接力</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <!-- 标签切换 -->
+  <view class="tabs-bar">
+    <view 
+      class="tab-item {{currentTab === 'received' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="received"
+    >
+      <text>收到的申请</text>
+      <view class="tab-badge" wx:if="{{receivedCount > 0}}">{{receivedCount}}</view>
+    </view>
+    <view 
+      class="tab-item {{currentTab === 'sent' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="sent"
+    >
+      <text>我发起的</text>
+    </view>
+    <view 
+      class="tab-item {{currentTab === 'published' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="published"
+    >
+      <text>我发布的</text>
+    </view>
+  </view>
+
+  <!-- 收到的申请 -->
+  <scroll-view class="content-scroll" scroll-y wx:if="{{currentTab === 'received'}}">
+    <view class="request-list" wx:if="{{receivedRequests.length > 0}}">
+      <view class="request-card card" wx:for="{{receivedRequests}}" wx:key="id">
+        <view class="request-header">
+          <view class="item-info">
+            <image class="item-thumb" src="{{item.itemPhoto}}" mode="aspectFill"></image>
+            <text class="item-name">{{item.itemTitle}}</text>
+          </view>
+          <view class="request-status {{item.status}}">
+            {{item.statusText}}
+          </view>
+        </view>
+
+        <view class="requester-info">
+          <view class="avatar avatar-sm">
+            <text class="avatar-text">{{item.requester.nickname[0]}}</text>
+          </view>
+          <view class="requester-detail">
+            <text class="requester-name">{{item.requester.nickname}}</text>
+            <text class="request-time">{{item.timeAgo}}</text>
+          </view>
+        </view>
+
+        <view class="request-message" wx:if="{{item.message}}">
+          <text class="message-label">用途说明：</text>
+          <text class="message-content">{{item.message}}</text>
+        </view>
+
+        <view class="request-actions" wx:if="{{item.status === 'pending'}}">
+          <button class="btn btn-outline" catchtap="rejectRequest" data-id="{{item.id}}">
+            拒绝
+          </button>
+          <button class="btn btn-primary" catchtap="acceptRequest" data-id="{{item.id}}">
+            同意接力
+          </button>
+        </view>
+
+        <!-- 已同意：交换联系方式 -->
+        <view class="contact-section" wx:if="{{item.status === 'accepted'}}">
+          <view class="contact-pending" wx:if="{{!item.contactExchanged}}">
+            <text class="pending-text">等待对方确认交换联系方式</text>
+          </view>
+          <view class="contact-info" wx:else>
+            <text class="contact-label">对方微信号：</text>
+            <text class="contact-value">{{item.requester.wechat}}</text>
+            <view class="copy-btn" catchtap="copyWechat" data-wechat="{{item.requester.wechat}}">复制</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">📭</text>
+      <text class="empty-text">暂无收到的申请</text>
+    </view>
+  </scroll-view>
+
+  <!-- 我发起的申请 -->
+  <scroll-view class="content-scroll" scroll-y wx:if="{{currentTab === 'sent'}}">
+    <view class="request-list" wx:if="{{sentRequests.length > 0}}">
+      <view class="request-card card" wx:for="{{sentRequests}}" wx:key="id">
+        <view class="request-header">
+          <view class="item-info" bindtap="goToItem" data-id="{{item.itemId}}">
+            <image class="item-thumb" src="{{item.itemPhoto}}" mode="aspectFill"></image>
+            <text class="item-name">{{item.itemTitle}}</text>
+          </view>
+          <view class="request-status {{item.status}}">
+            {{item.statusText}}
+          </view>
+        </view>
+
+        <view class="request-message" wx:if="{{item.message}}">
+          <text class="message-label">我的说明：</text>
+          <text class="message-content">{{item.message}}</text>
+        </view>
+
+        <!-- 等待中 -->
+        <view class="status-info" wx:if="{{item.status === 'pending'}}">
+          <text class="status-text">等待对方回复...</text>
+        </view>
+
+        <!-- 已同意：确认交换联系方式 -->
+        <view class="contact-section" wx:if="{{item.status === 'accepted'}}">
+          <view class="contact-confirm" wx:if="{{!item.myWechatFilled}}">
+            <text class="confirm-text">对方已同意，请填写你的微信号以完成联系方式交换</text>
+            <input 
+              class="wechat-input"
+              placeholder="输入微信号"
+              value="{{item.myWechat}}"
+              bindinput="onWechatInput"
+              data-id="{{item.id}}"
+            />
+            <button class="btn btn-primary btn-sm" catchtap="confirmExchange" data-id="{{item.id}}">
+              确认交换
+            </button>
+          </view>
+          <view class="contact-info" wx:else>
+            <text class="contact-label">对方微信号：</text>
+            <text class="contact-value">{{item.giver.wechat}}</text>
+            <view class="copy-btn" catchtap="copyWechat" data-wechat="{{item.giver.wechat}}">复制</view>
+          </view>
+        </view>
+
+        <!-- 已拒绝 -->
+        <view class="status-info rejected" wx:if="{{item.status === 'rejected'}}">
+          <text class="status-text">很遗憾，对方暂时无法接力</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">📤</text>
+      <text class="empty-text">暂无发起的申请</text>
+      <button class="btn btn-primary mt-lg" bindtap="goToRelay">去看看有什么好物</button>
+    </view>
+  </scroll-view>
+
+  <!-- 我发布的好物 -->
+  <scroll-view class="content-scroll" scroll-y wx:if="{{currentTab === 'published'}}">
+    <view class="published-list" wx:if="{{publishedItems.length > 0}}">
+      <view class="published-card card" wx:for="{{publishedItems}}" wx:key="id">
+        <view class="published-header" bindtap="goToItem" data-id="{{item.id}}">
+          <image class="item-thumb" src="{{item.photos[0]}}" mode="aspectFill"></image>
+          <view class="published-info">
+            <text class="item-title">{{item.title}}</text>
+            <text class="item-status {{item.status}}">{{item.statusText}}</text>
+          </view>
+        </view>
+        <view class="published-footer">
+          <text class="request-count">{{item.requestCount}} 人申请</text>
+          <view class="published-actions">
+            <text class="action-btn" catchtap="editItem" data-id="{{item.id}}">编辑</text>
+            <text class="action-btn danger" catchtap="deleteItem" data-id="{{item.id}}">下架</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">📦</text>
+      <text class="empty-text">暂无发布的好物</text>
+      <button class="btn btn-primary mt-lg" bindtap="goToPublish">发布好物</button>
+    </view>
+  </scroll-view>
+</view>
+
+<!-- 交接确认弹窗 -->
+<view class="modal-mask" wx:if="{{showTransferModal}}" bindtap="hideTransferModal">
+  <view class="transfer-modal" catchtap>
+    <view class="modal-header">
+      <text class="modal-title">确认交接方式</text>
+    </view>
+    <view class="modal-body">
+      <view class="transfer-options">
+        <view 
+          class="transfer-option {{transferMethod === 'face_to_face' ? 'selected' : ''}}"
+          bindtap="selectTransferMethod"
+          data-value="face_to_face"
+        >
+          <text class="option-icon">🤝</text>
+          <text>当面交接</text>
+        </view>
+        <view 
+          class="transfer-option {{transferMethod === 'courier' ? 'selected' : ''}}"
+          bindtap="selectTransferMethod"
+          data-value="courier"
+        >
+          <text class="option-icon">📦</text>
+          <text>快递寄送</text>
+        </view>
+      </view>
+
+      <view class="tracking-input" wx:if="{{transferMethod === 'courier'}}">
+        <text class="input-label">快递单号（仅对方可见）</text>
+        <input 
+          class="form-input"
+          placeholder="填写快递单号"
+          value="{{trackingNumber}}"
+          bindinput="onTrackingInput"
+        />
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="btn btn-primary btn-block" bindtap="confirmTransfer">
+        确认
+      </button>
+    </view>
+  </view>
+</view>
+
+<!-- 完成感谢弹窗 -->
+<view class="modal-mask" wx:if="{{showThankModal}}" bindtap="hideThankModal">
+  <view class="thank-modal" catchtap>
+    <text class="thank-icon">🌟</text>
+    <text class="thank-title">接力完成！</text>
+    <text class="thank-desc">给对方写一句感谢吧</text>
+    <textarea 
+      class="thank-textarea"
+      placeholder="感谢您的爱心传递..."
+      value="{{thankMessage}}"
+      bindinput="onThankInput"
+    ></textarea>
+    <view class="privacy-option">
+      <switch checked="{{thankPublic}}" bindchange="toggleThankPublic" color="#4CAF50"/>
+      <text>同步到社区分享</text>
+    </view>
+    <button class="btn btn-primary btn-block" bindtap="submitThank">
+      完成
+    </button>
+  </view>
+</view>
+

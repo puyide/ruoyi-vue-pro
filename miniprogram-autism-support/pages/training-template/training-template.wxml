@@ -1,0 +1,134 @@
+<!--pages/training-template/training-template.wxml-->
+<view class="template-page" style="--domain-color: {{domainInfo.color}}">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">{{domainName}}</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <!-- 领域信息头 -->
+  <view class="domain-header">
+    <view class="domain-icon-large">
+      <text>{{domainInfo.icon}}</text>
+    </view>
+    <text class="domain-title">{{domainName}}</text>
+    <text class="domain-count">共 {{templates.length}} 个训练模板</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 模板列表 -->
+  <view class="template-list" wx:else>
+    <view 
+      class="template-card"
+      wx:for="{{templates}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="selectTemplate"
+    >
+      <view class="template-icon">
+        <text>{{item.icon || '📝'}}</text>
+      </view>
+      <view class="template-content">
+        <text class="template-name">{{item.name}}</text>
+        <text class="template-goal">{{item.briefGoal}}</text>
+        <view class="template-meta">
+          <view class="meta-tag">
+            <text class="tag-icon">🔄</text>
+            <text>{{item.recommendedFrequency || '每天1次'}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="template-action">
+        <text class="action-text">开始</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{templates.length === 0}}">
+      <text class="empty-icon">📭</text>
+      <text class="empty-text">暂无训练模板</text>
+    </view>
+  </view>
+
+  <!-- 底部留白 -->
+  <view class="bottom-space safe-area-bottom"></view>
+</view>
+
+<!-- 难度选择弹窗 -->
+<view class="modal-mask" wx:if="{{showLevelPicker}}" bindtap="closeLevelPicker">
+  <view class="level-picker-modal" catchtap>
+    <view class="picker-header">
+      <text class="picker-title">选择难度等级</text>
+      <view class="picker-close" bindtap="closeLevelPicker">✕</view>
+    </view>
+
+    <!-- 选中的模板信息 -->
+    <view class="selected-template" wx:if="{{selectedTemplate}}">
+      <view class="template-preview-icon">
+        <text>{{selectedTemplate.icon || '📝'}}</text>
+      </view>
+      <view class="template-preview-info">
+        <text class="preview-name">{{selectedTemplate.name}}</text>
+        <text class="preview-goal">{{selectedTemplate.briefGoal}}</text>
+      </view>
+    </view>
+
+    <!-- 难度等级选择 -->
+    <view class="level-list">
+      <view 
+        class="level-option {{selectedLevel === 1 ? 'selected' : ''}}"
+        data-level="1"
+        bindtap="selectLevel"
+      >
+        <view class="level-badge l1">L1</view>
+        <view class="level-info">
+          <text class="level-name">初级难度</text>
+          <text class="level-desc">适合刚开始训练，降低要求，建立成功体验</text>
+        </view>
+        <view class="level-check" wx:if="{{selectedLevel === 1}}">✓</view>
+      </view>
+
+      <view 
+        class="level-option {{selectedLevel === 2 ? 'selected' : ''}}"
+        data-level="2"
+        bindtap="selectLevel"
+      >
+        <view class="level-badge l2">L2</view>
+        <view class="level-info">
+          <text class="level-name">中级难度</text>
+          <text class="level-desc">有一定基础后，适当提高要求</text>
+        </view>
+        <view class="level-check" wx:if="{{selectedLevel === 2}}">✓</view>
+      </view>
+
+      <view 
+        class="level-option {{selectedLevel === 3 ? 'selected' : ''}}"
+        data-level="3"
+        bindtap="selectLevel"
+      >
+        <view class="level-badge l3">L3</view>
+        <view class="level-info">
+          <text class="level-name">高级难度</text>
+          <text class="level-desc">能力稳定后，挑战更高目标</text>
+        </view>
+        <view class="level-check" wx:if="{{selectedLevel === 3}}">✓</view>
+      </view>
+    </view>
+
+    <!-- 确认按钮 -->
+    <view class="picker-footer">
+      <button class="btn btn-primary btn-block" bindtap="confirmStart">
+        开始训练
+      </button>
+    </view>
+  </view>
+</view>
+

@@ -1,0 +1,155 @@
+<!--pages/training-execute/training-execute.wxml-->
+<view class="execute-page">
+  <!-- 顶部状态栏占位 -->
+  <view class="status-bar"></view>
+  
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">{{title}}</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">准备中...</text>
+  </view>
+
+  <block wx:else>
+    <!-- 计时器区域 -->
+    <view class="timer-section">
+      <view class="timer-display">
+        <text class="timer-time">{{displayTime}}</text>
+        <text class="timer-label">训练时长</text>
+      </view>
+      
+      <view class="timer-controls">
+        <view class="timer-btn {{timerRunning ? 'pause' : 'start'}}" bindtap="toggleTimer">
+          <text wx:if="{{timerRunning}}">⏸</text>
+          <text wx:elif="{{timerPaused}}">▶</text>
+          <text wx:else>▶</text>
+        </view>
+      </view>
+
+      <!-- 成功计数 -->
+      <view class="success-counter">
+        <view class="counter-item">
+          <text class="counter-value success">{{successCount}}</text>
+          <text class="counter-label">成功次数</text>
+        </view>
+        <view class="counter-divider"></view>
+        <view class="counter-item">
+          <text class="counter-value">{{totalAttempts}}</text>
+          <text class="counter-label">总尝试</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 步骤进度指示器 -->
+    <view class="progress-indicator">
+      <view 
+        class="progress-dot {{index <= currentStepIndex ? 'active' : ''}} {{index === currentStepIndex ? 'current' : ''}}"
+        wx:for="{{trainingContent.steps}}"
+        wx:key="index"
+        data-index="{{index}}"
+        bindtap="goToStep"
+      >
+        <text>{{index + 1}}</text>
+      </view>
+    </view>
+
+    <!-- 当前步骤内容 -->
+    <view class="step-content" wx:if="{{trainingContent.steps && trainingContent.steps.length > 0}}">
+      <view class="step-card">
+        <view class="step-badge">
+          步骤 {{currentStepIndex + 1}} / {{totalSteps}}
+        </view>
+        
+        <text class="step-title">{{trainingContent.steps[currentStepIndex].title}}</text>
+        <text class="step-desc">{{trainingContent.steps[currentStepIndex].description}}</text>
+        
+        <view class="step-tips" wx:if="{{trainingContent.steps[currentStepIndex].tips}}">
+          <text class="tips-icon">💡</text>
+          <text class="tips-text">{{trainingContent.steps[currentStepIndex].tips}}</text>
+        </view>
+      </view>
+
+      <!-- 步骤导航按钮 -->
+      <view class="step-nav">
+        <view 
+          class="step-nav-btn prev {{currentStepIndex === 0 ? 'disabled' : ''}}" 
+          bindtap="prevStep"
+        >
+          <text>← 上一步</text>
+        </view>
+        <view 
+          class="step-nav-btn next {{currentStepIndex === totalSteps - 1 ? 'disabled' : ''}}" 
+          bindtap="nextStep"
+        >
+          <text>下一步 →</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 记录按钮区域 -->
+    <view class="record-section">
+      <view class="record-btn success" bindtap="recordSuccess">
+        <text class="record-icon">✓</text>
+        <text class="record-text">记录成功</text>
+      </view>
+      <view class="record-btn attempt" bindtap="recordAttempt">
+        <text class="record-icon">○</text>
+        <text class="record-text">记录尝试</text>
+      </view>
+    </view>
+
+    <!-- 底部完成按钮 -->
+    <view class="action-section safe-area-bottom">
+      <button class="btn btn-primary btn-block btn-large" bindtap="showComplete">
+        完成本次训练
+      </button>
+    </view>
+  </block>
+</view>
+
+<!-- 完成确认弹窗 -->
+<view class="modal-mask" wx:if="{{showCompleteModal}}" bindtap="closeCompleteModal">
+  <view class="complete-modal" catchtap>
+    <view class="modal-header">
+      <text class="modal-emoji">🎉</text>
+      <text class="modal-title">训练完成！</text>
+    </view>
+    
+    <view class="modal-stats">
+      <view class="stat-row">
+        <text class="stat-label">训练时长</text>
+        <text class="stat-value">{{displayTime}}</text>
+      </view>
+      <view class="stat-row">
+        <text class="stat-label">成功次数</text>
+        <text class="stat-value highlight">{{successCount}} 次</text>
+      </view>
+      <view class="stat-row">
+        <text class="stat-label">总尝试</text>
+        <text class="stat-value">{{totalAttempts}} 次</text>
+      </view>
+      <view class="stat-row" wx:if="{{totalAttempts > 0}}">
+        <text class="stat-label">成功率</text>
+        <text class="stat-value">{{totalAttempts > 0 ? Math.round(successCount / totalAttempts * 100) : 0}}%</text>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn btn-primary btn-block" bindtap="confirmComplete">
+        提交并记录反馈
+      </button>
+      <button class="btn btn-outline btn-block mt-md" bindtap="continueTraining">
+        继续训练
+      </button>
+    </view>
+  </view>
+</view>
+

@@ -1,0 +1,205 @@
+<!--pages/relay-publish/relay-publish.wxml-->
+<view class="relay-publish-page">
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <text class="back-icon">←</text>
+      <text>返回</text>
+    </view>
+    <view class="nav-right">
+      <view class="publish-btn {{canPublish ? 'active' : ''}}" bindtap="publish">
+        <text>发布</text>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view class="form-scroll" scroll-y>
+    <!-- 图片上传 -->
+    <view class="form-section">
+      <view class="section-header">
+        <text class="section-title">好物照片</text>
+        <text class="section-required">*必填</text>
+      </view>
+      <view class="image-upload-area">
+        <view 
+          class="uploaded-image"
+          wx:for="{{photos}}"
+          wx:key="*this"
+        >
+          <image src="{{item}}" mode="aspectFill"></image>
+          <view class="remove-btn" catchtap="removePhoto" data-index="{{index}}">
+            <text>×</text>
+          </view>
+        </view>
+        <view 
+          class="upload-btn"
+          wx:if="{{photos.length < 6}}"
+          bindtap="choosePhoto"
+        >
+          <text class="upload-icon">📷</text>
+          <text class="upload-text">添加照片</text>
+          <text class="upload-count">{{photos.length}}/6</text>
+        </view>
+      </view>
+      <text class="upload-tip">清晰的照片能帮助其他家长更好地了解好物情况</text>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="form-section">
+      <view class="section-header">
+        <text class="section-title">基本信息</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">好物名称 <text class="required">*</text></text>
+        <input 
+          class="form-input"
+          placeholder="如：感统平衡板、语言图片卡"
+          value="{{title}}"
+          bindinput="onTitleInput"
+          maxlength="30"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">新旧程度 <text class="required">*</text></text>
+        <view class="option-group">
+          <view 
+            class="option-item {{condition === item.value ? 'selected' : ''}}"
+            wx:for="{{conditionOptions}}"
+            wx:key="value"
+            bindtap="selectCondition"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">好物类型 <text class="required">*</text></text>
+        <view class="option-group">
+          <view 
+            class="option-item {{type === item.value ? 'selected' : ''}}"
+            wx:for="{{typeOptions}}"
+            wx:key="value"
+            bindtap="selectType"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">适用年龄 <text class="required">*</text></text>
+        <view class="option-group">
+          <view 
+            class="option-item {{ageGroup === item.value ? 'selected' : ''}}"
+            wx:for="{{ageOptions}}"
+            wx:key="value"
+            bindtap="selectAge"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">物品说明</text>
+        <textarea 
+          class="form-textarea"
+          placeholder="介绍好物的使用情况、保养状态等..."
+          value="{{description}}"
+          bindinput="onDescInput"
+          maxlength="500"
+        ></textarea>
+        <text class="char-count">{{description.length}}/500</text>
+      </view>
+    </view>
+
+    <!-- 接力方式 -->
+    <view class="form-section">
+      <view class="section-header">
+        <text class="section-title">接力方式</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">赠送方式 <text class="required">*</text></text>
+        <view class="method-options">
+          <view 
+            class="method-item {{method === 'give' ? 'selected' : ''}}"
+            bindtap="selectMethod"
+            data-value="give"
+          >
+            <view class="method-icon">🎁</view>
+            <view class="method-info">
+              <text class="method-name">赠送</text>
+              <text class="method-desc">免费送给需要的家庭</text>
+            </view>
+            <view class="method-check" wx:if="{{method === 'give'}}">✓</view>
+          </view>
+          <view 
+            class="method-item {{method === 'borrow' ? 'selected' : ''}}"
+            bindtap="selectMethod"
+            data-value="borrow"
+          >
+            <view class="method-icon">🔄</view>
+            <view class="method-info">
+              <text class="method-name">借用</text>
+              <text class="method-desc">借用一段时间后归还</text>
+            </view>
+            <view class="method-check" wx:if="{{method === 'borrow'}}">✓</view>
+          </view>
+          <view 
+            class="method-item {{method === 'sell' ? 'selected' : ''}}"
+            bindtap="selectMethod"
+            data-value="sell"
+          >
+            <view class="method-icon">💰</view>
+            <view class="method-info">
+              <text class="method-name">低价转让</text>
+              <text class="method-desc">低于市场价转让</text>
+            </view>
+            <view class="method-check" wx:if="{{method === 'sell'}}">✓</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">交付方式 <text class="required">*</text></text>
+        <view class="option-group">
+          <view 
+            class="option-item {{delivery === 'face_to_face' ? 'selected' : ''}}"
+            bindtap="selectDelivery"
+            data-value="face_to_face"
+          >
+            面交
+          </view>
+          <view 
+            class="option-item {{delivery === 'courier' ? 'selected' : ''}}"
+            bindtap="selectDelivery"
+            data-value="courier"
+          >
+            快递到付
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 提示信息 -->
+    <view class="tip-box">
+      <text class="tip-icon">💡</text>
+      <view class="tip-content">
+        <text class="tip-text">• 发布后将进入审核，审核通过后展示</text>
+        <text class="tip-text">• 接力申请需双方同意才能交换联系方式</text>
+        <text class="tip-text">• 请确保好物信息真实，避免纠纷</text>
+      </view>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-space safe-area-bottom"></view>
+  </scroll-view>
+</view>
+

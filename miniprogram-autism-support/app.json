@@ -1,0 +1,77 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/community/community",
+    "pages/training/training",
+    "pages/group/group",
+    "pages/profile/profile",
+    "pages/login/login",
+    "pages/post-detail/post-detail",
+    "pages/post-create/post-create",
+    "pages/training-detail/training-detail",
+    "pages/training-domain/training-domain",
+    "pages/training-template/training-template",
+    "pages/training-execute/training-execute",
+    "pages/training-feedback/training-feedback",
+    "pages/group-detail/group-detail",
+    "pages/resource/resource",
+    "pages/institution-detail/institution-detail",
+    "pages/child-profile/child-profile",
+    "pages/timer/timer",
+    "pages/search/search",
+    "pages/tip-detail/tip-detail",
+    "pages/relay/relay",
+    "pages/relay-detail/relay-detail",
+    "pages/relay-publish/relay-publish",
+    "pages/my-relay/my-relay",
+    "pages/thank-messages/thank-messages"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#FFF8F0",
+    "navigationBarTitleText": "星语家园",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FFF8F0"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#FF7A45",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/community/community",
+        "text": "社区",
+        "iconPath": "assets/icons/community.png",
+        "selectedIconPath": "assets/icons/community-active.png"
+      },
+      {
+        "pagePath": "pages/training/training",
+        "text": "训练",
+        "iconPath": "assets/icons/training.png",
+        "selectedIconPath": "assets/icons/training-active.png"
+      },
+      {
+        "pagePath": "pages/group/group",
+        "text": "小组",
+        "iconPath": "assets/icons/group.png",
+        "selectedIconPath": "assets/icons/group-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/icons/profile.png",
+        "selectedIconPath": "assets/icons/profile-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
+

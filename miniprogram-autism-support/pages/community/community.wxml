@@ -1,0 +1,111 @@
+<!--pages/community/community.wxml-->
+<view class="community-page">
+  <!-- 标签导航 -->
+  <view class="tabs-container">
+    <scroll-view class="tabs-scroll" scroll-x enable-flex>
+      <view 
+        class="tab-item {{currentTab === index ? 'tab-active' : ''}}"
+        wx:for="{{tabs}}"
+        wx:key="id"
+        data-index="{{index}}"
+        bindtap="switchTab"
+      >
+        <text>{{item.name}}</text>
+        <view class="tab-indicator" wx:if="{{currentTab === index}}"></view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 帖子列表 -->
+  <scroll-view 
+    class="post-list-scroll"
+    scroll-y
+    bindscrolltolower="loadMore"
+    refresher-enabled
+    bindrefresherrefresh="onRefresh"
+    refresher-triggered="{{isRefreshing}}"
+  >
+    <view class="post-list">
+      <view 
+        class="post-card card fade-in"
+        wx:for="{{posts}}"
+        wx:key="id"
+        style="animation-delay: {{index * 0.05}}s"
+        bindtap="goToPostDetail"
+        data-id="{{item.id}}"
+      >
+        <!-- 帖子头部 -->
+        <view class="post-header">
+          <view class="author-info">
+            <view class="avatar avatar-sm">
+              <image wx:if="{{item.author.avatar}}" src="{{item.author.avatar}}" mode="aspectFill"></image>
+              <text wx:else class="avatar-text">{{item.author.nickname[0]}}</text>
+            </view>
+            <view class="author-meta">
+              <text class="author-name">{{item.author.nickname}}</text>
+              <text class="post-time">{{item.timeAgo}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 帖子内容 -->
+        <view class="post-content">
+          <text class="post-title">{{item.title}}</text>
+          <view class="post-tags">
+            <view class="tag tag-primary" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">
+              #{{tag}}
+            </view>
+          </view>
+        </view>
+
+        <!-- AI 摘要 -->
+        <view class="ai-summary-box" wx:if="{{item.aiSummary}}">
+          <view class="ai-summary-header">
+            <text class="ai-icon">✨</text>
+            <text class="ai-label">AI 摘要</text>
+          </view>
+          <text class="ai-summary-text ellipsis-2">{{item.aiSummary}}</text>
+          <view class="expand-btn" catchtap="expandSummary" data-id="{{item.id}}">
+            <text>展开</text>
+          </view>
+        </view>
+
+        <!-- 帖子底部 -->
+        <view class="post-footer">
+          <view class="action-btn" catchtap="onRelate" data-id="{{item.id}}">
+            <image class="action-icon" src="/assets/icons/relate.svg" mode="aspectFit"></image>
+            <text>我也遇到过</text>
+            <text class="action-count" wx:if="{{item.relateCount}}">{{item.relateCount}}</text>
+          </view>
+          <view class="action-btn">
+            <image class="action-icon" src="/assets/icons/comment.svg" mode="aspectFit"></image>
+            <text>评论</text>
+            <text class="action-count">{{item.commentCount}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="loading-more" wx:if="{{isLoading}}">
+      <view class="loading-spinner"></view>
+      <text>加载中...</text>
+    </view>
+
+    <!-- 没有更多 -->
+    <view class="no-more" wx:if="{{noMore}}">
+      <text>— 没有更多了 —</text>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-space safe-area-bottom"></view>
+  </scroll-view>
+
+  <!-- 发布按钮 -->
+  <view class="fab-btn" bindtap="goToCreate">
+    <view class="fab-inner">
+      <text class="fab-icon">+</text>
+    </view>
+  </view>
+</view>
+

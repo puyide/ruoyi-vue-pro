@@ -1,0 +1,118 @@
+<!--pages/timer/timer.wxml-->
+<view class="timer-page">
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">视觉计时器</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <view class="timer-content">
+    <!-- 计时器显示区 -->
+    <view class="timer-display">
+      <!-- 圆形进度条 -->
+      <view class="timer-circle-container">
+        <view class="timer-circle">
+          <view class="circle-bg"></view>
+          <view class="circle-progress" style="--progress: {{progress}}deg; --color: {{timerColor}}"></view>
+          <view class="circle-inner">
+            <text class="time-text">{{displayTime}}</text>
+            <text class="time-label">{{isRunning ? '剩余时间' : '准备开始'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 进度条 -->
+      <view class="progress-bar-container">
+        <view class="progress-bar">
+          <view 
+            class="progress-fill" 
+            style="width: {{progressPercent}}%; background: {{timerColor}}"
+          ></view>
+        </view>
+        <view class="progress-labels">
+          <text>{{formatTime(totalSeconds)}}</text>
+          <text>00:00</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 时长选择 -->
+    <view class="duration-section">
+      <text class="section-label">选择时长</text>
+      <view class="duration-options">
+        <view 
+          class="duration-btn {{selectedDuration === item.value ? 'selected' : ''}}"
+          wx:for="{{durationOptions}}"
+          wx:key="value"
+          bindtap="selectDuration"
+          data-value="{{item.value}}"
+        >
+          <text>{{item.label}}</text>
+        </view>
+      </view>
+      
+      <!-- 自定义时长 -->
+      <view class="custom-duration" wx:if="{{showCustomInput}}">
+        <input 
+          type="number"
+          class="custom-input"
+          placeholder="输入分钟数"
+          value="{{customMinutes}}"
+          bindinput="onCustomInput"
+        />
+        <text class="custom-unit">分钟</text>
+      </view>
+    </view>
+
+    <!-- 控制按钮 -->
+    <view class="control-section">
+      <view class="control-buttons">
+        <button 
+          class="control-btn reset-btn"
+          bindtap="resetTimer"
+          disabled="{{!isRunning && remainingSeconds === totalSeconds}}"
+        >
+          <text class="btn-icon">↺</text>
+          <text>重置</text>
+        </button>
+        
+        <button 
+          class="control-btn main-btn {{isRunning ? 'pause' : 'start'}}"
+          bindtap="toggleTimer"
+        >
+          <text class="btn-icon">{{isRunning ? '⏸' : '▶'}}</text>
+          <text>{{isRunning ? '暂停' : '开始'}}</text>
+        </button>
+      </view>
+    </view>
+
+    <!-- 使用提示 -->
+    <view class="tips-card">
+      <view class="tips-header">
+        <text class="tips-icon">💡</text>
+        <text class="tips-title">使用技巧</text>
+      </view>
+      <view class="tips-list">
+        <text class="tip-item">• 视觉计时器帮助孩子理解时间概念</text>
+        <text class="tip-item">• 红色区域会随时间减少，直观显示剩余时间</text>
+        <text class="tip-item">• 适合用于等待、任务计时等场景</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 时间到弹窗 -->
+<view class="modal-mask" wx:if="{{showCompleteModal}}" bindtap="closeCompleteModal">
+  <view class="complete-modal" catchtap>
+    <text class="complete-icon">🎉</text>
+    <text class="complete-title">时间到啦！</text>
+    <text class="complete-desc">做得很棒！</text>
+    <button class="btn btn-primary btn-block mt-lg" bindtap="closeCompleteModal">
+      好的
+    </button>
+  </view>
+</view>
+

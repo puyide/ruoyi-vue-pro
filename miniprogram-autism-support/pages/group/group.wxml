@@ -1,0 +1,144 @@
+<!--pages/group/group.wxml-->
+<view class="group-page">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">我的同行小组</text>
+    <text class="page-subtitle">和同阶段家长进行日常交流与经验分享</text>
+  </view>
+
+  <!-- 我加入的小组 -->
+  <view class="section" wx:if="{{myGroups.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">已加入的小组</text>
+    </view>
+    
+    <view class="group-list">
+      <view 
+        class="group-card card"
+        wx:for="{{myGroups}}"
+        wx:key="id"
+        bindtap="enterGroup"
+        data-id="{{item.id}}"
+      >
+        <view class="group-card-left">
+          <view class="group-avatar {{item.theme}}">
+            <text>{{item.icon}}</text>
+          </view>
+        </view>
+        <view class="group-card-content">
+          <view class="group-name">{{item.name}}</view>
+          <view class="group-tags">
+            <text class="group-tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+          </view>
+          <view class="group-meta">
+            <text class="member-count">{{item.memberCount}} 位家长</text>
+          </view>
+          <view class="group-activity" wx:if="{{item.lastActivity}}">
+            <view class="activity-dot"></view>
+            <text class="activity-text">{{item.lastActivity}}</text>
+          </view>
+        </view>
+        <view class="group-card-arrow">
+          <text>进入空间</text>
+          <text class="arrow-icon">›</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 推荐小组 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">为你推荐</text>
+      <text class="section-desc">根据孩子档案智能推荐</text>
+    </view>
+
+    <view class="group-list">
+      <view 
+        class="group-card card"
+        wx:for="{{recommendGroups}}"
+        wx:key="id"
+      >
+        <view class="group-card-left">
+          <view class="group-avatar {{item.theme}}">
+            <text>{{item.icon}}</text>
+          </view>
+        </view>
+        <view class="group-card-content">
+          <view class="group-name">{{item.name}}</view>
+          <view class="group-tags">
+            <text class="group-tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+          </view>
+          <view class="group-meta">
+            <text class="member-count">{{item.memberCount}} 位家长</text>
+          </view>
+          <text class="group-desc ellipsis-2">{{item.description}}</text>
+        </view>
+        <view class="group-card-action">
+          <button 
+            class="join-btn {{item.joined ? 'joined' : ''}}"
+            catchtap="toggleJoin"
+            data-id="{{item.id}}"
+          >
+            {{item.joined ? '已加入' : '加入'}}
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 全部小组 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">全部小组</text>
+    </view>
+
+    <view class="category-tabs">
+      <view 
+        class="category-tab {{currentCategory === item.id ? 'active' : ''}}"
+        wx:for="{{categories}}"
+        wx:key="id"
+        bindtap="switchCategory"
+        data-id="{{item.id}}"
+      >
+        {{item.name}}
+      </view>
+    </view>
+
+    <view class="group-list">
+      <view 
+        class="group-card card"
+        wx:for="{{allGroups}}"
+        wx:key="id"
+      >
+        <view class="group-card-left">
+          <view class="group-avatar {{item.theme}}">
+            <text>{{item.icon}}</text>
+          </view>
+        </view>
+        <view class="group-card-content">
+          <view class="group-name">{{item.name}}</view>
+          <view class="group-tags">
+            <text class="group-tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+          </view>
+          <view class="group-meta">
+            <text class="member-count">{{item.memberCount}} 位家长</text>
+          </view>
+        </view>
+        <view class="group-card-action">
+          <button 
+            class="join-btn {{item.joined ? 'joined' : ''}}"
+            catchtap="toggleJoin"
+            data-id="{{item.id}}"
+          >
+            {{item.joined ? '已加入' : '加入'}}
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部留白 -->
+  <view class="bottom-space safe-area-bottom"></view>
+</view>
+
