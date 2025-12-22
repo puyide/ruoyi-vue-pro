@@ -43,7 +43,7 @@ public interface EquipmentHandoverMapper extends BaseMapperX<EquipmentHandoverDO
                 .and(w -> w.eq(EquipmentHandoverDO::getLenderUserId, userId)
                         .or()
                         .eq(EquipmentHandoverDO::getBorrowerUserId, userId))
-                .eqIfPresent(EquipmentHandoverDO::getHandoverStatus, pageReqVO.getStatus())
+                .eq(pageReqVO.getStatus() != null, EquipmentHandoverDO::getHandoverStatus, pageReqVO.getStatus())
                 .orderByDesc(EquipmentHandoverDO::getLastMessageTime));
     }
 

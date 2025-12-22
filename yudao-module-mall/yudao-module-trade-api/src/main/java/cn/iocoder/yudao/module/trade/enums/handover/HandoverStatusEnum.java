@@ -17,7 +17,9 @@ public enum HandoverStatusEnum implements ArrayValuable<Integer> {
 
     COMMUNICATING(0, "沟通中"),
     ARRANGED(1, "约见/寄出"),
-    COMPLETED(2, "完成");
+    COMPLETED(2, "完成"),
+    IN_PROGRESS(3, "进行中"),
+    PENDING (4, "待办");
 
     public static final Integer[] ARRAYS = Arrays.stream(values()).map(HandoverStatusEnum::getStatus).toArray(Integer[]::new);
 

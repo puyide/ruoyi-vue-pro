@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 import static cn.iocoder.yudao.framework.common.pojo.CommonResult.success;
@@ -66,12 +67,12 @@ public class HandoverController {
         respVO.setHandoverTime(handover.getHandoverTime());
         respVO.setActualHandoverTime(handover.getActualHandoverTime());
         respVO.setEquipmentCondition(handover.getEquipmentCondition());
-        respVO.setEquipmentPhotos(handover.getEquipmentPhotos());
+        respVO.setEquipmentPhotos(Collections.singletonList(handover.getEquipmentPhotos()));
         respVO.setExpressNo(handover.getExpressNo());
         respVO.setExpressCompany(handover.getExpressCompany());
         respVO.setExpressStatus(handover.getExpressStatus());
         respVO.setReturnCondition(handover.getReturnCondition());
-        respVO.setReturnPhotos(handover.getReturnPhotos());
+        respVO.setReturnPhotos(Collections.singletonList(handover.getReturnPhotos()));
         respVO.setReturnTime(handover.getReturnTime());
         respVO.setLenderVerifyResult(handover.getLenderVerifyResult());
         respVO.setBorrowerVerifyResult(handover.getBorrowerVerifyResult());
